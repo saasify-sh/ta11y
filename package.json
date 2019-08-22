@@ -29,6 +29,7 @@
   "scripts": {
     "bootstrap": "lerna bootstrap",
     "publish": "lerna publish",
+    "docs": "lerna run --parallel docs",
     "preinstall": "node -e \"if (process.env.npm_execpath.indexOf('yarn') < 0) throw new Error('yarn is required for development')\"",
     "postinstall": "run-s bootstrap",
     "fix": "eslint . --fix",
