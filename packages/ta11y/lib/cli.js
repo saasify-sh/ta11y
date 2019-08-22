@@ -29,6 +29,11 @@ module.exports = async (argv) => {
       'Only run content extraction and disable auditing.',
       false
     )
+    .option(
+      '-s, --suites <strings>',
+      'Optional comma-separated array of test suites to run. (section508, wcag2a, wcag2aa, wcag2aaa, best-practice, html). Defaults to wcag2aa.',
+      (v) => v.split(',')
+    )
     .option('-c, --crawl', 'Enable crawling additional pages.', false)
     .option('-d, --max-depth <int>', 'Maximum crawl depth.', 16, (s) =>
       parseInt(s)
@@ -78,6 +83,8 @@ module.exports = async (argv) => {
   const url = program.args[0]
 
   const opts = pick(program, [
+    'extractOnly',
+    'suites',
     'crawl',
     'maxDepth',
     'maxVisit',
@@ -85,8 +92,7 @@ module.exports = async (argv) => {
     'blacklist',
     'whitelist',
     'userAgent',
-    'emulateDevice',
-    'extractOnly'
+    'emulateDevice'
   ])
 
   if (!program.remote) {

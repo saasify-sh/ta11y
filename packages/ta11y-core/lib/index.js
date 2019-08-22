@@ -2,6 +2,7 @@
 
 const { extract } = require('@ta11y/extract')
 const got = require('got')
+const pick = require('lodash.pick')
 const isHtml = require('is-html')
 const isUrl = require('is-url-superb')
 const util = require('util')
@@ -48,6 +49,13 @@ exports.Ta11y = class Ta11y {
    *
    * @param {string} urlOrHtml - URL or raw HTML to process.
    * @param {object} opts - Config options.
+   * @param {string[]} [opts.suites=['wcag2aa']] - Optional array of audit suites to run. Possible values:
+   * - `section508`
+   * - `wcag2a`
+   * - `wcag2aa`
+   * - `wcag2aaa`
+   * - `best-practice`
+   * - `html`
    * @param {object} [opts.browser] - Optional [Puppeteer](https://pptr.dev) browser instance to use for auditing websites that aren't publicly reachable.
    * @param {boolean} [opts.extractOnly=false] - Whether or not to perform extraction and auditing, or just extraction. By default, a full audit is performed, but in some cases it can be useful to store the extraction results for later processing.
    * @param {boolean} [opts.crawl=false] - Whether or not to crawl additional pages.
@@ -75,7 +83,7 @@ exports.Ta11y = class Ta11y {
         return extractResults
       } else {
         console.error('extraction results', extractResults.summary)
-        return this.auditExtractResults(extractResults)
+        return this.auditExtractResults(extractResults, opts)
       }
     }
   }
@@ -86,11 +94,22 @@ exports.Ta11y = class Ta11y {
    *
    * @param {object} extractResults - Extraction results conforming to the output format
    * from `@ta11y/extract`.
+   * @param {object} opts - Config options.
+   * @param {string[]} [opts.suites=['wcag2aa']] - Optional array of audit suites to run. Possible values:
+   * - `section508`
+   * - `wcag2a`
+   * - `wcag2aa`
+   * - `wcag2aaa`
+   * - `best-practice`
+   * - `html`
    *
    * @return {Promise}
    */
-  async auditExtractResults(extractResults) {
-    const bodyRaw = JSON.stringify({ extractResults })
+  async auditExtractResults(extractResults, opts) {
+    const bodyRaw = JSON.stringify({
+      ...pick(opts, ['suites', 'rules']),
+      extractResults
+    })
     const body = await gzip(Buffer.from(bodyRaw))
 
     const apiAuditUrl = `${this._apiBaseUrl}/auditExtractResults`
