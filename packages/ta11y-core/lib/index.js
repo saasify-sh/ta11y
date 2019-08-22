@@ -64,8 +64,12 @@ exports.Ta11y = class Ta11y {
     } else {
       const extractResults = await extract(urlOrHtml, opts)
 
-      console.log('extraction results', extractResults.summary)
-      return this.auditExtractResults(extractResults)
+      if (opts.extractOnly) {
+        return extractResults
+      } else {
+        console.log('extraction results', extractResults.summary)
+        return this.auditExtractResults(extractResults)
+      }
     }
   }
 
@@ -104,8 +108,12 @@ exports.Ta11y = class Ta11y {
       throw new Error('audit expects either a URL or HTML input')
     }
 
-    const apiAuditUrl = `${this._apiBaseUrl}/audit`
-    const res = await got.post(apiAuditUrl, {
+    const apiUrl = opts.extractOnly
+      ? `${this._apiBaseUrl}/extract`
+      : `${this._apiBaseUrl}/audit`
+    delete opts.extractOnly
+
+    const res = await got.post(apiUrl, {
       body: {
         ...opts,
         url,
