@@ -16,35 +16,42 @@ const { devices } = require('puppeteer-core')
 // TODO: will need to support being given HTML instead of a URL
 
 exports.extract = async function extract(urlOrHtml, opts) {
+  let sameOrigin = opts.sameOrigin === undefined ? true : !!opts.sameOrigin
+  let origin
   let url
   let html
 
   if (isUrl(urlOrHtml)) {
-    url = urlOrHtml
+    url = normalizeUrl(urlOrHtml)
+    origin = new URL(url).origin
   } else if (isHtml(urlOrHtml)) {
     html = urlOrHtml
     url = 'root'
+    origin = 'localhost'
+
+    if (opts.sameOrigin) {
+      throw new Error('extract "sameOrigin" is not supported with HTML input')
+    }
+
+    sameOrigin = false
   } else {
     throw new Error('extract expects either a URL or HTML input')
   }
 
-  ow(url, 'url', ow.string.nonEmpty.url)
+  ow(url, 'url', ow.string.nonEmpty)
   ow(opts, 'opts', ow.object.plain.partialShape({ browser: ow.object }))
 
   debug('extract', url)
-  url = normalizeUrl(url)
 
   const { concurrency = 8 } = opts
   const results = {}
   const visited = new Set()
-  const origin = new URL(url).origin
 
   const queue = new PQueue({ concurrency })
 
   await queue.add(() =>
     visitPage({
       crawl: false,
-      sameOrigin: true,
       maxDepth: 16,
       maxVisit: undefined,
       blacklist: undefined,
@@ -57,6 +64,7 @@ exports.extract = async function extract(urlOrHtml, opts) {
       url,
       html,
       origin,
+      sameOrigin,
       results,
       visited,
       queue,
@@ -95,26 +103,32 @@ async function visitPage(opts) {
     return
   }
 
-  if (opts.maxVisited && opts.visited.size >= opts.maxVisited) {
+  if (opts.maxVisit && opts.visited.size >= opts.maxVisit) {
     return
   }
 
-  const normalizedUrl = normalizeUrl(url)
+  let normalizedUrl
 
-  if (opts.visited.has(normalizedUrl)) {
-    return
-  }
+  if (depth === 0 && opts.html) {
+    normalizedUrl = url
+  } else {
+    normalizedUrl = normalizeUrl(url)
 
-  if (opts.sameOrigin && new URL(normalizedUrl).origin !== opts.origin) {
-    return
-  }
+    if (opts.visited.has(normalizedUrl)) {
+      return
+    }
 
-  if (opts.blacklist && mm.isMatch(normalizedUrl, opts.blacklist)) {
-    return
-  }
+    if (opts.sameOrigin && new URL(normalizedUrl).origin !== opts.origin) {
+      return
+    }
 
-  if (opts.whitelist && !mm.isMatch(normalizedUrl, opts.whitelist)) {
-    return
+    if (opts.blacklist && mm.isMatch(normalizedUrl, opts.blacklist)) {
+      return
+    }
+
+    if (opts.whitelist && !mm.isMatch(normalizedUrl, opts.whitelist)) {
+      return
+    }
   }
 
   opts.visited.add(normalizedUrl)
@@ -193,7 +207,6 @@ async function extractPage(opts) {
 }
 
 async function getPage(url, opts) {
-  ow(url, 'url', ow.string.nonEmpty.url)
   ow(
     opts,
     'opts',
@@ -222,8 +235,10 @@ async function getPage(url, opts) {
   }
 
   if (opts.depth === 0 && opts.html) {
+    ow(opts.html, 'html', ow.string.nonEmpty)
     await page.setContent(opts.html)
   } else {
+    ow(url, 'url', ow.string.nonEmpty.url)
     await page.goto(url, opts.gotoOptions)
   }
 

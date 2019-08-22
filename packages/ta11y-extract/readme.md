@@ -18,7 +18,28 @@ npm install --save @ta11y/extract
 
 ## Usage
 
-TODO
+```js
+const { extract } = require('@ta11y/extract')
+
+extract('https://en.wikipedia.org')
+  .then((result) => {
+    console.log(result.summary) // overview of results (number of urls visited, success, error)
+    console.log(result.results) // detailed results keyed by url
+  })
+```
+
+```js
+const { extract } = require('@ta11y/extract')
+
+// example passing HTML directly
+extract('<!doctype><html><body><h1>I ❤ unicorns</h1></body></html>')
+  .then((result) => {
+    console.log(result.summary) // overview of results (number of urls visited, success, error)
+    console.log(result.results) // detailed results keyed by url
+
+    // note that the result key for an HTML input is 'root' instead of url
+  })
+```
 
 ## License
 
