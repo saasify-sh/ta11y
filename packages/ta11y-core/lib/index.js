@@ -22,8 +22,7 @@ exports.Ta11y = class Ta11y {
   }
 
   async audit(urlOrHtml, opts) {
-    if (!opts || opts.remote) {
-      delete opts.remote
+    if (!opts || !opts.browser) {
       return this._remoteAudit(urlOrHtml, opts)
     } else {
       const extractResults = await extract(urlOrHtml, opts)
