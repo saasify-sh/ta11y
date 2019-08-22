@@ -80,15 +80,14 @@ exports.Ta11y = class Ta11y {
   async auditExtractResults(extractResults) {
     const apiAuditUrl = `${this._apiBaseUrl}/auditExtractResults`
     console.log({ apiAuditUrl })
-    const auditResults = await got
-      .post(apiAuditUrl, {
-        json: extractResults,
-        headers: this._headers
-      })
-      .json()
+    const res = await got.post(apiAuditUrl, {
+      body: extractResults,
+      headers: this._headers,
+      json: true
+    })
 
-    console.log({ auditResults })
-    return auditResults
+    console.log({ auditResults: res.body })
+    return res.body
   }
 
   /**
@@ -107,17 +106,17 @@ exports.Ta11y = class Ta11y {
     }
 
     const apiAuditUrl = `${this._apiBaseUrl}/audit`
-    const auditResults = await got
-      .post(apiAuditUrl, {
-        json: {
-          ...opts,
-          url,
-          html
-        },
-        headers: this._headers
-      })
-      .json()
+    const res = await got.post(apiAuditUrl, {
+      body: {
+        ...opts,
+        url,
+        html
+      },
+      headers: this._headers,
+      json: true
+    })
 
-    return auditResults
+    console.log({ auditResults: res.body })
+    return res.body
   }
 }
