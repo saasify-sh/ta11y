@@ -61,11 +61,11 @@ ta11y.audit('<!doctype><html><body><h1>I ❤ accessibility</h1></body></html>')
 
 ### API Key
 
-You'll need to sign up for a ta11y API key once you want to disable rate-limiting.
+The free tier is subject to rate limits as well as a 60 second timeout, so if you're crawling a site, you're better off running content extraction locally.
 
-Note that the free tier is also subject to a 60 second timeout, so if you're crawling a site or processing a non-publicly accessible website (like `localhost`), you're better off running content extraction locally.
+If you're processing a non-publicly accessible website (like `localhost`), then you *must* perform content extraction locally.
 
-You can bypass this timeout and rate limiting by [signing up](https://ta11y.saasify.sh/pricing) for an API key and passing it either via the `--api-key` flag or via the `TA11Y_API_KEY` environment variable.
+You can bypass rate limiting by [signing up](https://ta11y.saasify.sh/pricing) for an API key and passing it either via the `--api-key` flag or via the `TA11Y_API_KEY` environment variable.
 
 ```js
 const ta11y = new Ta11y({

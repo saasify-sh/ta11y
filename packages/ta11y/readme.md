@@ -56,15 +56,19 @@ Options:
 
 **The CLI defaults to running all crawling and content extraction locally via a headless Puppeteer instance**.
 
-You can disable this and run everything remotely by passing the `--remote` option.
-
-Note that the free tier is also subject to a 60 second timeout, so if you're crawling a site or processing a non-publicly accessible website (like `localhost`), you're better off running content extraction locally.
-
-You can bypass this timeout and rate limiting by [signing up](https://ta11y.saasify.sh/pricing) for an API key and passing it either via the `--api-key` flag or via the `TA11Y_API_KEY` environment variable.
-
-Visit [ta11y](https://ta11y.saasify.sh) once you're ready to sign up for an API key.
+You can disable this and run everything remotely by passing the `--remote` option, though it's not recommended.
 
 See [@ta11y/core](https://github.com/saasify-sh/ta11y/tree/master/packages/ta11y-core) for more detailed descriptions of how the different configuration options affect auditing behavior.
+
+### API Key
+
+The free tier is subject to rate limits as well as a 60 second timeout, so if you're crawling a site, you're better off running content extraction locally.
+
+If you're processing a non-publicly accessible website (like `localhost`), then you *must* perform content extraction locally.
+
+You can bypass rate limiting by [signing up](https://ta11y.saasify.sh/pricing) for an API key and passing it either via the `--api-key` flag or via the `TA11Y_API_KEY` environment variable.
+
+Visit [ta11y](https://ta11y.saasify.sh) once you're ready to sign up for an API key.
 
 ## Examples
 
