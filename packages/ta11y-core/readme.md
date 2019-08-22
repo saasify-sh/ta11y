@@ -98,7 +98,7 @@ Type: `function (urlOrHtml, opts): Promise`
 -   `urlOrHtml` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** URL or raw HTML to process.
 -   `opts` **[object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** Config options.
     -   `opts.browser` **[object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** Optional [Puppeteer](https://pptr.dev) browser instance to use for auditing websites that aren't publicly reachable.
-    -   `opts.crawl` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** Whether or not to crawl secondary pages. (optional, default `false`)
+    -   `opts.crawl` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** Whether or not to crawl additional pages. (optional, default `false`)
     -   `opts.maxDepth` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** Maximum crawl depth while crawling. (optional, default `16`)
     -   `opts.maxVisit` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)?** Maximum number of pages to visit while crawling.
     -   `opts.sameOrigin` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** Whether or not to only consider crawling links with the same origin as the root URL. (optional, default `true`)
