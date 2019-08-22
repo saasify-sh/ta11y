@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://ta11y.saasify.sh" title="ta11y">
-    <img src="https://raw.githubusercontent.com/saasify-sh/ta11y/master/media/logo.svg" alt="ta11y Logo" width="256" />
+    <img src="https://raw.githubusercontent.com/saasify-sh/ta11y/master/media/logo.svg?sanitize=true" alt="ta11y Logo" width="256" />
   </a>
 </p>
 
