@@ -23,7 +23,6 @@ exports.Ta11y = class Ta11y {
     } = opts
 
     this._apiBaseUrl = apiBaseUrl
-
     this._headers = {}
 
     if (apiKey) {
@@ -64,6 +63,7 @@ exports.Ta11y = class Ta11y {
     } else {
       const extractResults = await extract(urlOrHtml, opts)
 
+      console.log(extractResults.summary)
       return this.auditExtractResults(extractResults)
     }
   }
@@ -78,7 +78,8 @@ exports.Ta11y = class Ta11y {
    * @return {Promise}
    */
   async auditExtractResults(extractResults) {
-    const apiAuditUrl = `${this.apiBaseUrl}/auditExtractResults`
+    const apiAuditUrl = `${this._apiBaseUrl}/auditExtractResults`
+    console.log({ apiAuditUrl })
     const auditResults = await got
       .post(apiAuditUrl, {
         json: extractResults,
@@ -86,6 +87,7 @@ exports.Ta11y = class Ta11y {
       })
       .json()
 
+    console.log({ auditResults })
     return auditResults
   }
 
@@ -104,7 +106,7 @@ exports.Ta11y = class Ta11y {
       throw new Error('audit expects either a URL or HTML input')
     }
 
-    const apiAuditUrl = `${this.apiBaseUrl}/audit`
+    const apiAuditUrl = `${this._apiBaseUrl}/audit`
     const auditResults = await got
       .post(apiAuditUrl, {
         json: {
