@@ -10,4 +10,8 @@ exports.Ta11y = class Ta11y {
     this._apiBaseUrl = apiBaseUrl
     this._apiKey = apiKey
   }
+
+  async auditUrl(url, opts) {
+    // TODO
+  }
 }
