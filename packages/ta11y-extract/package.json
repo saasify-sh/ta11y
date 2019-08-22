@@ -1,0 +1,36 @@
+{
+  "name": "@ta11y/ta11y-extract",
+  "version": "0.1.0",
+  "description": "Extracts content from websites for running accessibility audits with ta11y.",
+  "main": "index.js",
+  "author": "Saasify <dev@saasify.sh>",
+  "repository": "saasify-sh/ta11y",
+  "license": "MIT",
+  "engines": {
+    "node": ">=8"
+  },
+  "scripts": {
+    "test": "ava -v"
+  },
+  "keywords": [
+    "ada",
+    "accessibility",
+    "compliance",
+    "puppeteer",
+    "aatt",
+    "validation",
+    "WCAG",
+    "section 508",
+    "remediation",
+    "axe",
+    "pa11y",
+    "tenon",
+    "webhint",
+    "lighthouse",
+    "audit",
+    "html"
+  ],
+  "ava": {
+    "snapshotDir": "./.snapshots"
+  }
+}
