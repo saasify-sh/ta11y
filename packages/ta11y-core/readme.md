@@ -65,7 +65,7 @@ The free tier is subject to rate limits as well as a 60 second timeout, so if yo
 
 If you're processing a non-publicly accessible website (like `localhost`), then you *must* perform content extraction locally.
 
-You can bypass rate limiting by [signing up](https://ta11y.saasify.sh/pricing) for an API key and passing it either via the `--api-key` flag or via the `TA11Y_API_KEY` environment variable.
+You can bypass rate limiting by [signing up](https://ta11y.saasify.sh/pricing) for an API key and passing it either via the `apiKey` option of the `Ta11y` constructor or via the `TA11Y_API_KEY` environment variable.
 
 ```js
 const ta11y = new Ta11y({
