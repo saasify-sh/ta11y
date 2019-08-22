@@ -4,6 +4,10 @@ const { extract } = require('@ta11y/extract')
 const got = require('got')
 const isHtml = require('is-html')
 const isUrl = require('is-url-superb')
+const util = require('util')
+const zlib = require('zlib')
+
+const gzip = util.promisify(zlib.gzip.bind(zlib))
 
 /**
  * Class to run web accessibility audits via the [ta11y API](https://ta11y.saasify.sh).
@@ -24,7 +28,9 @@ exports.Ta11y = class Ta11y {
     } = opts
 
     this._apiBaseUrl = apiBaseUrl
-    this._headers = {}
+    this._headers = {
+      'accept-encoding': 'gzip'
+    }
 
     if (apiKey) {
       this._headers.authorization = `Bearer ${apiKey}`
@@ -43,6 +49,7 @@ exports.Ta11y = class Ta11y {
    * @param {string} urlOrHtml - URL or raw HTML to process.
    * @param {object} opts - Config options.
    * @param {object} [opts.browser] - Optional [Puppeteer](https://pptr.dev) browser instance to use for auditing websites that aren't publicly reachable.
+   * @param {boolean} [opts.extractOnly=false] - Whether or not to perform extraction and auditing, or just extraction. By default, a full audit is performed, but in some cases it can be useful to store the extraction results for later processing.
    * @param {boolean} [opts.crawl=false] - Whether or not to crawl additional pages.
    * @param {number} [opts.maxDepth=16] - Maximum crawl depth while crawling.
    * @param {number} [opts.maxVisit] - Maximum number of pages to visit while crawling.
@@ -67,7 +74,7 @@ exports.Ta11y = class Ta11y {
       if (opts.extractOnly) {
         return extractResults
       } else {
-        console.log('extraction results', extractResults.summary)
+        console.error('extraction results', extractResults.summary)
         return this.auditExtractResults(extractResults)
       }
     }
@@ -83,14 +90,22 @@ exports.Ta11y = class Ta11y {
    * @return {Promise}
    */
   async auditExtractResults(extractResults) {
+    const bodyRaw = JSON.stringify({ extractResults })
+    const body = await gzip(Buffer.from(bodyRaw))
+
     const apiAuditUrl = `${this._apiBaseUrl}/auditExtractResults`
     const res = await got.post(apiAuditUrl, {
-      body: extractResults,
-      headers: this._headers,
-      json: true
+      body,
+      headers: {
+        ...this._headers,
+        accept: 'application/json',
+        'content-type': 'application/json',
+        'content-encoding': 'gzip'
+      },
+      responseType: 'json'
     })
 
-    return res.body
+    return JSON.parse(res.body)
   }
 
   /**

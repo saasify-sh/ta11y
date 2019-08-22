@@ -59,15 +59,21 @@ You can also pass HTML directly to audit (whole pages or fragments).
 ta11y.audit('<!doctype><html><body><h1>I ❤ accessibility</h1></body></html>')
 ```
 
-Note that you will need to pass an `apiKey` to the `Ta11y` constructor once you want to disable rate-limiting.
+### API Key
 
-Visit [ta11y](https://ta11y.saasify.sh) to sign up for an API key.
+You'll need to sign up for a ta11y API key once you want to disable rate-limiting.
+
+Note that the free tier is also subject to a 60 second timeout, so if you're crawling a site or processing a non-publicly accessible website (like `localhost`), you're better off running content extraction locally.
+
+You can bypass this timeout and rate limiting by [signing up](https://ta11y.saasify.sh/pricing) for an API key and passing it either via the `--api-key` flag or via the `TA11Y_API_KEY` environment variable.
 
 ```js
 const ta11y = new Ta11y({
   apiKey: '<your-api-key>'
 })
 ```
+
+Visit [ta11y](https://ta11y.saasify.sh) once you're ready to sign up for an API key.
 
 ## API
 
