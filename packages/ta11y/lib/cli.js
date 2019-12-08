@@ -31,7 +31,7 @@ module.exports = async (argv) => {
     )
     .option(
       '-s, --suites <strings>',
-      'Optional comma-separated array of test suites to run. (section508, wcag2a, wcag2aa, wcag2aaa, best-practice, html). Defaults to wcag2aa.',
+      'Optional comma-separated array of test suites to run. (section508, wcag2a, wcag2aa, wcag2aaa, best-practice, html). Defaults to running all audit suites.',
       (v) => v.split(',')
     )
     .option('-c, --crawl', 'Enable crawling additional pages.', false)
