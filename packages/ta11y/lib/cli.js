@@ -67,6 +67,7 @@ module.exports = async (argv) => {
       '-H, --no-headless <string>',
       'Disables headless mode for puppeteer. Useful for debugging.'
     )
+    .option('-P, --no-progress', 'Disables progress logging.')
 
   program.parse(argv)
 
@@ -92,7 +93,8 @@ module.exports = async (argv) => {
     'blacklist',
     'whitelist',
     'userAgent',
-    'emulateDevice'
+    'emulateDevice',
+    'progress'
   ])
 
   if (!program.remote) {

@@ -8,6 +8,9 @@ const isUrl = require('is-url-superb')
 // const util = require('util')
 // const zlib = require('zlib')
 
+const noopSpinner = require('./noop-spinner')
+const spinner = require('./spinner')
+
 // TODO: ZEIT now seems to have a bug with handling content-encoding compression
 // const gzip = util.promisify(zlib.gzip.bind(zlib))
 
@@ -80,7 +83,11 @@ exports.Ta11y = class Ta11y {
     if (!opts || !opts.browser) {
       return this._remoteAudit(urlOrHtml, opts)
     } else {
-      const extractResults = await extract(urlOrHtml, opts)
+      const progressSpinner = opts.progress === false ? noopSpinner : spinner
+      const extractResults = await progressSpinner(
+        extract(urlOrHtml, opts),
+        'Extracting content via headless chrome'
+      )
 
       if (opts.extractOnly) {
         return extractResults
@@ -110,6 +117,7 @@ exports.Ta11y = class Ta11y {
    * @return {Promise}
    */
   async auditExtractResults(extractResults, opts = {}) {
+    const progressSpinner = opts.progress === false ? noopSpinner : spinner
     const bodyRaw = JSON.stringify({
       ...pick(opts, ['suites', 'rules']),
       extractResults
@@ -118,16 +126,19 @@ exports.Ta11y = class Ta11y {
     const body = bodyRaw
 
     const apiAuditUrl = `${this._apiBaseUrl}/auditExtractResults`
-    const res = await got.post(apiAuditUrl, {
-      body,
-      headers: {
-        ...this._headers,
-        accept: 'application/json',
-        'content-type': 'application/json'
-        // 'content-encoding': 'gzip'
-      },
-      responseType: 'json'
-    })
+    const res = await progressSpinner(
+      got.post(apiAuditUrl, {
+        body,
+        headers: {
+          ...this._headers,
+          accept: 'application/json',
+          'content-type': 'application/json'
+          // 'content-encoding': 'gzip'
+        },
+        responseType: 'json'
+      }),
+      'Auditing extraction results'
+    )
 
     return JSON.parse(res.body)
   }
@@ -136,13 +147,17 @@ exports.Ta11y = class Ta11y {
    * @private
    */
   async _remoteAudit(urlOrHtml, opts = {}) {
+    const progressSpinner = opts.progress === false ? noopSpinner : spinner
+    let label
     let url
     let html
 
     if (isUrl(urlOrHtml)) {
       url = urlOrHtml
+      label = `Auditing URL ${url}`
     } else if (isHtml(urlOrHtml)) {
       html = urlOrHtml
+      label = 'Auditing HTML'
     } else {
       throw new Error('audit expects either a URL or HTML input')
     }
@@ -150,17 +165,22 @@ exports.Ta11y = class Ta11y {
     const apiUrl = opts.extractOnly
       ? `${this._apiBaseUrl}/extract`
       : `${this._apiBaseUrl}/audit`
-    delete opts.extractOnly
 
-    const res = await got.post(apiUrl, {
-      body: {
-        ...opts,
-        url,
-        html
-      },
-      headers: this._headers,
-      json: true
-    })
+    delete opts.extractOnly
+    delete opts.progress
+
+    const res = await progressSpinner(
+      got.post(apiUrl, {
+        body: {
+          ...opts,
+          url,
+          html
+        },
+        headers: this._headers,
+        json: true
+      }),
+      label
+    )
 
     return res.body
   }
