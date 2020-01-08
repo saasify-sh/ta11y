@@ -2,7 +2,9 @@
 
 const debug = require('debug')('ta11y-extract')
 const createError = require('http-errors')
+const isHtml = require('is-html')
 const isRelativeUrl = require('is-relative-url')
+const isUrl = require('is-url-superb')
 const normalizeUrl = require('normalize-url')
 const resolveRelativeUrl = require('resolve-relative-url')
 const mm = require('micromatch')
@@ -11,11 +13,26 @@ const pMap = require('p-map')
 const { default: PQueue } = require('p-queue')
 const { devices } = require('puppeteer-core')
 
-exports.extract = async function extract(url, opts) {
+// TODO: will need to support being given HTML instead of a URL
+
+exports.extract = async function extract(urlOrHtml, opts) {
+  let url
+  let html
+
+  if (isUrl(urlOrHtml)) {
+    url = urlOrHtml
+  } else if (isHtml(urlOrHtml)) {
+    html = urlOrHtml
+    url = 'root'
+  } else {
+    throw new Error('extract expects either a URL or HTML input')
+  }
+
   ow(url, 'url', ow.string.nonEmpty.url)
   ow(opts, 'opts', ow.object.plain.partialShape({ browser: ow.object }))
 
   debug('extract', url)
+  url = normalizeUrl(url)
 
   const { concurrency = 8 } = opts
   const results = {}
@@ -38,17 +55,19 @@ exports.extract = async function extract(url, opts) {
       ...opts,
       concurrency,
       url,
+      html,
       origin,
       results,
       visited,
       queue,
-      depth: 1
+      depth: 0
     })
   )
 
   await queue.onIdle()
 
   const summary = {
+    root: url,
     visited: visited.size,
     success: Object.keys(results).reduce(
       (acc, url) => acc + (results[url].error ? 0 : 1),
@@ -151,12 +170,17 @@ async function extractPage(opts) {
         }
       })
 
-      await pMap(links, (link) =>
-        visitPage({
-          ...opts,
-          url: link,
-          depth: depth + 1
-        })
+      await pMap(
+        links,
+        (link) =>
+          visitPage({
+            ...opts,
+            url: link,
+            depth: depth + 1
+          }),
+        {
+          concurrency: 128
+        }
       )
     }
   } catch (err) {
@@ -197,7 +221,11 @@ async function getPage(url, opts) {
     }
   }
 
-  await page.goto(url, opts.gotoOptions)
+  if (opts.depth === 0 && opts.html) {
+    await page.setContent(opts.html)
+  } else {
+    await page.goto(url, opts.gotoOptions)
+  }
 
   return page
 }

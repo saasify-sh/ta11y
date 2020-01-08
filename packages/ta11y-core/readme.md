@@ -4,16 +4,16 @@
   </a>
 </p>
 
-# @ta11y/ta11y-core
+# @ta11y/core
 
 > Core library for running web accessibility audits with ta11y.
 
-[![NPM](https://img.shields.io/npm/v/@ta11y/ta11y-core.svg)](https://www.npmjs.com/package/@ta11y/ta11y-core) [![Build Status](https://travis-ci.com/saasify-sh/ta11y.svg?branch=master)](https://travis-ci.com/saasify-sh/ta11y) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+[![NPM](https://img.shields.io/npm/v/@ta11y/core.svg)](https://www.npmjs.com/package/@ta11y/core) [![Build Status](https://travis-ci.com/saasify-sh/ta11y.svg?branch=master)](https://travis-ci.com/saasify-sh/ta11y) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
 ## Install
 
 ```bash
-npm install --save @ta11y/ta11y-core
+npm install --save @ta11y/core
 ```
 
 ## Usage

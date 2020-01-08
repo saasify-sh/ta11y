@@ -1,5 +1,5 @@
 {
-  "name": "@ta11y/ta11y-extract",
+  "name": "@ta11y/extract",
   "version": "0.1.0",
   "description": "Extracts content from websites for running accessibility audits with ta11y.",
   "main": "./lib/index.js",
@@ -39,7 +39,9 @@
   "dependencies": {
     "debug": "^4.1.1",
     "http-errors": "^1.7.3",
+    "is-html": "^2.0.0",
     "is-relative-url": "^3.0.0",
+    "is-url-superb": "^3.0.0",
     "micromatch": "^4.0.2",
     "normalize-url": "^4.5.0",
     "ow": "^0.15.0",
