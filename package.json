@@ -1,8 +1,8 @@
 {
-  "name": "ada",
+  "name": "ta11y",
   "private": true,
   "author": "Saasify <dev@saasify.sh>",
-  "repository": "saasify-sh/ada",
+  "repository": "saasify-sh/ta11y",
   "license": "MIT",
   "engines": {
     "node": ">=8"
