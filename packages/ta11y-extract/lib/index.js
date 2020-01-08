@@ -13,6 +13,28 @@ const pMap = require('p-map')
 const { default: PQueue } = require('p-queue')
 const { devices } = require('puppeteer-core')
 
+/**
+ * Extracts the dynamic HTML content from a website, optionally crawling the site
+ * to discover links and extracting those too.
+ *
+ * @param {string} urlOrHtml - URL or raw HTML to process.
+ * @param {object} opts - Config options.
+ * @param {object} opts.browser - Required [Puppeteer](https://pptr.dev) browser instance to use.
+ * @param {boolean} [opts.crawl=false] - Whether or not to crawl secondary pages.
+ * @param {number} [opts.maxDepth=16] - Maximum crawl depth while crawling.
+ * @param {number} [opts.maxVisit] - Maximum number of pages to visit while crawling.
+ * @param {boolean} [opts.sameOrigin=true] - Whether or not to only consider crawling links with the same origin as the root URL.
+ * @param {string[]} [opts.blacklist] - Optional blacklist of URL [glob patterns](https://github.com/micromatch/micromatch) to ignore.
+ * @param {string[]} [opts.whitelist] - Optional whitelist of URL [glob patterns](https://github.com/micromatch/micromatch) to only include.
+ * @param {object} [opts.gotoOptions] - Customize the `Page.goto` navigation options.
+ * @param {object} [opts.viewport] - Set the browser window's viewport dimensions and/or resolution.
+ * @param {string} [opts.userAgent] - Set the browser's [user-agent](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/User-Agent).
+ * @param {string} [opts.emulateDevice] - Make it look like the screenshot was taken on the specified device.
+ * - Use the `name` property from one of the built-in [devices](https://github.com/GoogleChrome/puppeteer/blob/master/lib/DeviceDescriptors.js).
+ * - Overrides `viewport` and `userAgent`.
+ *
+ * @return {Promise}
+ */
 exports.extract = async function extract(urlOrHtml, opts) {
   let sameOrigin = opts.sameOrigin === undefined ? true : !!opts.sameOrigin
   let origin
