@@ -12,7 +12,11 @@
 
 ## Usage
 
-TODO
+This project is broken down into the following modules:
+
+- [@ta11y/ta11y](./packages/ta11y) - Main CLI for running web accessibility audits with ta11y.
+- [@ta11y/core](./packages/core) - Core library for programatically running web accessibility audits with ta11y.
+- [@ta11y/extract](./packages/extract) - Library to crawl and extract content from websites.
 
 ## License
 
