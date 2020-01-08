@@ -20,7 +20,7 @@ const { devices } = require('puppeteer-core')
  * @param {string} urlOrHtml - URL or raw HTML to process.
  * @param {object} opts - Config options.
  * @param {object} opts.browser - Required [Puppeteer](https://pptr.dev) browser instance to use.
- * @param {boolean} [opts.crawl=false] - Whether or not to crawl secondary pages.
+ * @param {boolean} [opts.crawl=false] - Whether or not to crawl additional pages.
  * @param {number} [opts.maxDepth=16] - Maximum crawl depth while crawling.
  * @param {number} [opts.maxVisit] - Maximum number of pages to visit while crawling.
  * @param {boolean} [opts.sameOrigin=true] - Whether or not to only consider crawling links with the same origin as the root URL.
@@ -29,7 +29,7 @@ const { devices } = require('puppeteer-core')
  * @param {object} [opts.gotoOptions] - Customize the `Page.goto` navigation options.
  * @param {object} [opts.viewport] - Set the browser window's viewport dimensions and/or resolution.
  * @param {string} [opts.userAgent] - Set the browser's [user-agent](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/User-Agent).
- * @param {string} [opts.emulateDevice] - Make it look like the screenshot was taken on the specified device.
+ * @param {string} [opts.emulateDevice] - Emulate a specific device type.
  * - Use the `name` property from one of the built-in [devices](https://github.com/GoogleChrome/puppeteer/blob/master/lib/DeviceDescriptors.js).
  * - Overrides `viewport` and `userAgent`.
  *
@@ -48,11 +48,6 @@ exports.extract = async function extract(urlOrHtml, opts) {
     html = urlOrHtml
     url = 'root'
     origin = 'localhost'
-
-    if (opts.sameOrigin) {
-      throw new Error('extract "sameOrigin" is not supported with HTML input')
-    }
-
     sameOrigin = false
   } else {
     throw new Error('extract expects either a URL or HTML input')
@@ -93,6 +88,7 @@ exports.extract = async function extract(urlOrHtml, opts) {
   )
 
   await queue.onIdle()
+  queue.pause()
 
   const summary = {
     root: url,

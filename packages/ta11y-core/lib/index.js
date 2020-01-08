@@ -18,7 +18,8 @@ const isUrl = require('is-url-superb')
 exports.Ta11y = class Ta11y {
   constructor(opts = {}) {
     const {
-      apiBaseUrl = 'https://ssfy.sh/dev/ta11y',
+      apiBaseUrl = process.env.TA11Y_API_BASE_URL ||
+        'https://ssfy.sh/dev/ta11y',
       apiKey = process.env.TA11Y_API_KEY
     } = opts
 
@@ -42,7 +43,7 @@ exports.Ta11y = class Ta11y {
    * @param {string} urlOrHtml - URL or raw HTML to process.
    * @param {object} opts - Config options.
    * @param {object} [opts.browser] - Optional [Puppeteer](https://pptr.dev) browser instance to use for auditing websites that aren't publicly reachable.
-   * @param {boolean} [opts.crawl=false] - Whether or not to crawl secondary pages.
+   * @param {boolean} [opts.crawl=false] - Whether or not to crawl additional pages.
    * @param {number} [opts.maxDepth=16] - Maximum crawl depth while crawling.
    * @param {number} [opts.maxVisit] - Maximum number of pages to visit while crawling.
    * @param {boolean} [opts.sameOrigin=true] - Whether or not to only consider crawling links with the same origin as the root URL.
@@ -51,7 +52,7 @@ exports.Ta11y = class Ta11y {
    * @param {object} [opts.gotoOptions] - Customize the `Page.goto` navigation options.
    * @param {object} [opts.viewport] - Set the browser window's viewport dimensions and/or resolution.
    * @param {string} [opts.userAgent] - Set the browser's [user-agent](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/User-Agent).
-   * @param {string} [opts.emulateDevice] - Make it look like the screenshot was taken on the specified device.
+   * @param {string} [opts.emulateDevice] - Emulate a specific device type.
    * - Use the `name` property from one of the built-in [devices](https://github.com/GoogleChrome/puppeteer/blob/master/lib/DeviceDescriptors.js).
    * - Overrides `viewport` and `userAgent`.
    *
@@ -63,7 +64,7 @@ exports.Ta11y = class Ta11y {
     } else {
       const extractResults = await extract(urlOrHtml, opts)
 
-      console.log(extractResults.summary)
+      console.log('extraction results', extractResults.summary)
       return this.auditExtractResults(extractResults)
     }
   }
@@ -79,14 +80,12 @@ exports.Ta11y = class Ta11y {
    */
   async auditExtractResults(extractResults) {
     const apiAuditUrl = `${this._apiBaseUrl}/auditExtractResults`
-    console.log({ apiAuditUrl })
     const res = await got.post(apiAuditUrl, {
       body: extractResults,
       headers: this._headers,
       json: true
     })
 
-    console.log({ auditResults: res.body })
     return res.body
   }
 
@@ -116,7 +115,6 @@ exports.Ta11y = class Ta11y {
       json: true
     })
 
-    console.log({ auditResults: res.body })
     return res.body
   }
 }

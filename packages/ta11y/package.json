@@ -9,7 +9,11 @@
   "engines": {
     "node": ">=8"
   },
+  "bin": {
+    "ta11y": "./index.js"
+  },
   "scripts": {
+    "docs": "update-markdown-usage",
     "test": "ava -v"
   },
   "keywords": [
@@ -28,9 +32,21 @@
     "webhint",
     "lighthouse",
     "audit",
-    "html"
+    "html",
+    "cli",
+    "CI"
   ],
   "ava": {
     "snapshotDir": "./.snapshots"
+  },
+  "dependencies": {
+    "@ta11y/core": "^0.1.1",
+    "commander": "^4.1.0",
+    "lodash.pick": "^4.4.0",
+    "puppeteer": "^2.0.0"
+  },
+  "devDependencies": {
+    "execa": "^4.0.0",
+    "update-markdown-usage": "^1.0.7"
   }
 }
