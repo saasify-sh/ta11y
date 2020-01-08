@@ -29,6 +29,10 @@ ta11y.audit('https://en.wikipedia.org')
   })
 ```
 
+You can optionally pass an `apiKey` in the `Ta11y` constructor which will disable rate-limiting for the Ta11y API.
+
+You can also optionally override the default `apiBaseUrl` here if you have a custom Ta11y deployment.
+
 ## License
 
 MIT © [Saasify](https://saasify.sh)
