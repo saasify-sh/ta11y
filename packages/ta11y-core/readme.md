@@ -18,7 +18,16 @@ npm install --save @ta11y/core
 
 ## Usage
 
-TODO
+```js
+const { Ta11y } = require('@ta11y/core')
+
+const ta11y = new Ta11y()
+
+ta11y.audit('https://en.wikipedia.org')
+  .then((results) => {
+    console.log(results)
+  })
+```
 
 ## License
 

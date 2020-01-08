@@ -1,7 +1,7 @@
 'use strict'
 
-// const { extract } = require('@ta11y/extract')
-// const got = require('got')
+const { extract } = require('@ta11y/extract')
+const got = require('got')
 
 exports.Ta11y = class Ta11y {
   constructor(opts = {}) {
@@ -11,12 +11,29 @@ exports.Ta11y = class Ta11y {
     } = opts
 
     this._apiBaseUrl = apiBaseUrl
-    this._apiKey = apiKey
+
+    this._headers = {}
+
+    if (apiKey) {
+      this._headers.authorization = `Bearer ${apiKey}`
+    }
   }
 
-  async audit(url, opts) {
-    // const crawlResults = await extract(url, opts)
+  async audit(urlOrHtml, opts) {
+    const extractResults = await extract(urlOrHtml, opts)
+
+    return this.auditExtractResults(extractResults)
   }
 
-  async auditCrawlResults(crawlResults) {}
+  async auditExtractResults(extractResults) {
+    const apiAuditUrl = `${this.apiBaseUrl}/auditExtractResults`
+    const auditResults = await got
+      .post(apiAuditUrl, {
+        json: extractResults,
+        headers: this._headers
+      })
+      .json()
+
+    return auditResults
+  }
 }
