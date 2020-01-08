@@ -1,0 +1,70 @@
+{
+  "name": "ada",
+  "private": true,
+  "author": "Saasify <dev@saasify.sh>",
+  "repository": "saasify-sh/ada",
+  "license": "MIT",
+  "engines": {
+    "node": ">=8"
+  },
+  "keywords": [
+    "ada",
+    "accessibility",
+    "compliance",
+    "puppeteer",
+    "aatt",
+    "validation",
+    "WCAG",
+    "section 508",
+    "compliance",
+    "remediation",
+    "axe",
+    "pa11y",
+    "tenon",
+    "webhint",
+    "lighthouse",
+    "audit",
+    "html"
+  ],
+  "scripts": {
+    "bootstrap": "lerna bootstrap",
+    "publish": "lerna publish",
+    "preinstall": "node -e \"if (process.env.npm_execpath.indexOf('yarn') < 0) throw new Error('yarn is required for development')\"",
+    "postinstall": "run-s bootstrap",
+    "fix": "eslint . --fix",
+    "test": "run-s test:*",
+    "test:unit": "lerna run test",
+    "test:lint": "eslint .",
+    "test:prettier": "prettier '**/*.js' --check"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.0.3",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.7.0",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-prettier": "^3.1.1",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "husky": "^3.1.0",
+    "lerna": "^3.20.2",
+    "lint-staged": "^9.5.0",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^1.19.1"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ]
+  }
+}
