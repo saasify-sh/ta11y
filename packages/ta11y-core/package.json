@@ -10,6 +10,7 @@
     "node": ">=8"
   },
   "scripts": {
+    "docs": "update-markdown-jsdoc --no-markdown-toc",
     "test": "ava -v"
   },
   "keywords": [
@@ -38,5 +39,8 @@
     "is-html": "^2.0.0",
     "is-url-superb": "^3.0.0",
     "ow": "^0.15.0"
+  },
+  "devDependencies": {
+    "update-markdown-jsdoc": "^1.0.11"
   }
 }

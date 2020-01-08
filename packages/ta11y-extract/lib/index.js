@@ -15,7 +15,7 @@ const { devices } = require('puppeteer-core')
 
 /**
  * Extracts the dynamic HTML content from a website, optionally crawling the site
- * to discover links and extracting those too.
+ * to discover additional pages and extracting those too.
  *
  * @param {string} urlOrHtml - URL or raw HTML to process.
  * @param {object} opts - Config options.
