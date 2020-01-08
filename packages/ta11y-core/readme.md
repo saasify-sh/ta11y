@@ -29,7 +29,7 @@ ta11y.audit('https://en.wikipedia.org')
   })
 ```
 
-Alternatively, you can tell ta11y to **crawl** starting from the URL.
+Alternatively, you can tell ta11y to **crawl** additional pages starting from the root page.
 
 ```js
 ta11y.audit('https://en.wikipedia.org', {
@@ -44,7 +44,7 @@ If you want to crawl non-public pages, pass an instance of [Puppeteer](https://p
 ```js
 const puppeteer = require('puppeteer')
 
-const browser = await puppeteer.launch(launchOptions)
+const browser = await puppeteer.launch()
 
 ta11y.audit('http://localhost:3000', {
   browser,
