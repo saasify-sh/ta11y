@@ -32,7 +32,7 @@ extract('https://en.wikipedia.org')
 const { extract } = require('@ta11y/extract')
 
 // example passing HTML directly
-extract('<!doctype><html><body><h1>I ❤ unicorns</h1></body></html>')
+extract('<!doctype><html><body><h1>I ❤ accessibility</h1></body></html>')
   .then((result) => {
     console.log(result.summary) // overview of results (number of urls visited, success, error)
     console.log(result.results) // detailed results keyed by url

@@ -27,21 +27,34 @@ ta11y.audit('https://en.wikipedia.org')
   .then((results) => {
     console.log(results)
   })
+```
 
-// alternatively, you can tell ta11y to crawl the URL
+```js
+// alternatively, you can tell ta11y to crawl starting from the URL
 ta11y.audit('https://en.wikipedia.org', {
   crawl: true,
   maxDepth: 1,
   maxVisit: 64
 })
-  .then((results) => {
-    console.log(results)
-  })
 ```
 
-You can optionally pass an `apiKey` in the `Ta11y` constructor which will disable rate-limiting for the Ta11y API.
+```js
+// if you want to crawl non-public pages, pass an instance of puppeteer
+// this is useful for testing in development or behind corporate firewalls
+ta11y.audit('http://localhost:3000', {
+  crawl: true,
+  maxDepth: 0
+})
+```
 
-You can also optionally override the default `apiBaseUrl` here if you have a custom Ta11y deployment.
+```js
+// you can also pass HTML directly to audit (whole pages or fragments)
+ta11y.audit('<!doctype><html><body><h1>I ❤ accessibility</h1></body></html>')
+```
+
+You can optionally pass an `apiKey` to the `Ta11y` constructor which will disable rate-limiting.
+
+You can optionally override the default `apiBaseUrl` here if you have a custom Ta11y deployment which is useful for on-premise scenarios.
 
 ## License
 
