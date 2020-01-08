@@ -2,7 +2,7 @@
   "name": "@ta11y/ta11y-extract",
   "version": "0.1.0",
   "description": "Extracts content from websites for running accessibility audits with ta11y.",
-  "main": "index.js",
+  "main": "./lib/index.js",
   "author": "Saasify <dev@saasify.sh>",
   "repository": "saasify-sh/ta11y",
   "license": "MIT",
@@ -32,5 +32,23 @@
   ],
   "ava": {
     "snapshotDir": "./.snapshots"
+  },
+  "peerDependencies": {
+    "puppeteer-core": "^2.0.0"
+  },
+  "dependencies": {
+    "debug": "^4.1.1",
+    "http-errors": "^1.7.3",
+    "is-relative-url": "^3.0.0",
+    "micromatch": "^4.0.2",
+    "normalize-url": "^4.5.0",
+    "ow": "^0.15.0",
+    "p-map": "^3.0.0",
+    "p-queue": "^6.2.1",
+    "resolve-relative-url": "^1.0.0"
+  },
+  "devDependencies": {
+    "puppeteer": "^2.0.0",
+    "puppeteer-core": "^2.0.0"
   }
 }
