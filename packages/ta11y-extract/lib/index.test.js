@@ -30,7 +30,7 @@ test('wikipedia url crawl', async (t) => {
     browser,
     crawl: true,
     maxDepth: 1, // stop crawling after one link of depth
-    maxVisit: 8 // stop crawling after visiting 8 URLs to speed up
+    maxVisit: 8 // stop crawling after visiting 8 URLs to keep test quick
   })
   console.log(result.summary)
   t.truthy(result)

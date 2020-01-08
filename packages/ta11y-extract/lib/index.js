@@ -13,8 +13,6 @@ const pMap = require('p-map')
 const { default: PQueue } = require('p-queue')
 const { devices } = require('puppeteer-core')
 
-// TODO: will need to support being given HTML instead of a URL
-
 exports.extract = async function extract(urlOrHtml, opts) {
   let sameOrigin = opts.sameOrigin === undefined ? true : !!opts.sameOrigin
   let origin

@@ -34,6 +34,9 @@
     "snapshotDir": "./.snapshots"
   },
   "dependencies": {
-    "got": "^10.2.1"
+    "got": "^10.2.1",
+    "is-html": "^2.0.0",
+    "is-url-superb": "^3.0.0",
+    "ow": "^0.15.0"
   }
 }

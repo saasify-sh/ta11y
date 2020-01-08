@@ -27,6 +27,16 @@ ta11y.audit('https://en.wikipedia.org')
   .then((results) => {
     console.log(results)
   })
+
+// alternatively, you can tell ta11y to crawl the URL
+ta11y.audit('https://en.wikipedia.org', {
+  crawl: true,
+  maxDepth: 1,
+  maxVisit: 64
+})
+  .then((results) => {
+    console.log(results)
+  })
 ```
 
 You can optionally pass an `apiKey` in the `Ta11y` constructor which will disable rate-limiting for the Ta11y API.
