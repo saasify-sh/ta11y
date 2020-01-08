@@ -1,6 +1,7 @@
 {
   "name": "ta11y",
   "private": true,
+  "description": "Modern web accessibility audits. 💪",
   "author": "Saasify <dev@saasify.sh>",
   "repository": "saasify-sh/ta11y",
   "license": "MIT",
@@ -16,7 +17,6 @@
     "validation",
     "WCAG",
     "section 508",
-    "compliance",
     "remediation",
     "axe",
     "pa11y",
@@ -38,6 +38,7 @@
     "test:prettier": "prettier '**/*.js' --check"
   },
   "devDependencies": {
+    "ava": "^2.4.0",
     "babel-eslint": "^10.0.3",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.7.0",
