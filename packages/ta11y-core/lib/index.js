@@ -111,7 +111,7 @@ exports.Ta11y = class Ta11y {
   /**
    * @private
    */
-  async _remoteAudit(urlOrHtml, opts) {
+  async _remoteAudit(urlOrHtml, opts = {}) {
     let url
     let html
 
