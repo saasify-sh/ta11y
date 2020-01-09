@@ -157,25 +157,13 @@ This example will crawl and extract the target site locally and then perform a r
 </details>
 
 <details>
-<summary>Audit a localhost site</summary>
+<summary>Crawl a localhost site and audit each page</summary>
 
 ```bash
 ta11y http://localhost:3000 --crawl
 ```
 
-This example will crawl all pages of a local site and then perform an audit of the results. Note that the local site does not have to be publicly accessible.
-
-</details>
-
-<details>
-<summary>Audit a localhost site</summary>
-
-```bash
-ta11y http://localhost:3000 --crawl
-```
-
-This example will crawl all pages of a local site and then perform an audit of the results. Note that the local site does not have to be publicly accessible.
-
+This example will crawl all pages of a local site and then perform an audit of the results. Note that the local site does not have to be publicly accessible as content extraction happens locally.
 </details>
 
 ## License
