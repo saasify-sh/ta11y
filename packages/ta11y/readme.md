@@ -56,7 +56,120 @@ Options:
 
 You can disable this and run everything remotely by passing the `--remote` option.
 
+Note that the free tier is also subject to a 60 second timeout, so if you're crawling a site or processing a non-publicly accessible website (like `localhost`), you're better off running content extraction locally.
+
+You can bypass this timeout and rate limiting by [signing up](https://ta11y.saasify.sh/pricing) for an API key and passing it either via the `--api-key` flag or via the `TA11Y_API_KEY` environment variable.
+
+Visit [ta11y](https://ta11y.saasify.sh) once you're ready to sign up for an API key.
+
 See [@ta11y/core](https://github.com/saasify-sh/ta11y/tree/master/packages/ta11y-core) for more detailed descriptions of how the different configuration options affect auditing behavior.
+
+## Examples
+
+<details>
+<summary>Basic single page audit</summary>
+
+```bash
+ta11y https://example.com
+```
+
+```json
+{
+  "summary": {},
+  "results": {
+    "https://example.com": {
+      "url": "https://example.com",
+      "depth": 0,
+      "rules": [
+        {
+          "code": "html-has-lang",
+          "type": "error",
+          "message": "<html> element must have a lang attribute (https://dequeuniversity.com/rules/axe/3.4/html-has-lang?application=axeAPI)",
+          "description": "Ensures every HTML document has a lang attribute",
+          "impact": "serious",
+          "help": "<html> element must have a lang attribute",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/3.4/html-has-lang?application=axeAPI"
+        },
+        {
+          "code": "landmark-one-main",
+          "type": "error",
+          "message": "Document must have one main landmark (https://dequeuniversity.com/rules/axe/3.4/landmark-one-main?application=axeAPI)",
+          "description": "Ensures the document has only one main landmark and each iframe in the page has at most one main landmark",
+          "impact": "moderate",
+          "help": "Document must have one main landmark",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/3.4/landmark-one-main?application=axeAPI"
+        },
+        {
+          "code": "region",
+          "type": "error",
+          "message": "All page content must be contained by landmarks (https://dequeuniversity.com/rules/axe/3.4/region?application=axeAPI)",
+          "description": "Ensures all page content is contained by landmarks",
+          "impact": "moderate",
+          "help": "All page content must be contained by landmarks",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/3.4/region?application=axeAPI"
+        }
+      ]
+    }
+  }
+}
+```
+</details>
+
+<details>
+<summary>Basic single page extraction</summary>
+
+```bash
+ta11y https://example.com --extract-only
+```
+
+```json
+{
+  "results": {
+    "https://example.com": {
+      "url": "https://example.com",
+      "depth": 0,
+      "content": "<!DOCTYPE html><html><head>\n    <title>Example Domain</title>\n\n    <meta charset=\"utf-8\">\n    <meta http-equiv=\"Content-type\" content=\"text/html; charset=utf-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n    <style type=\"text/css\">\n    body {\n        background-color: #f0f0f2;\n        margin: 0;\n        padding: 0;\n        font-family: -apple-system, system-ui, BlinkMacSystemFont, \"Segoe UI\", \"Open Sans\", \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n        \n    }\n    div {\n        width: 600px;\n        margin: 5em auto;\n        padding: 2em;\n        background-color: #fdfdff;\n        border-radius: 0.5em;\n        box-shadow: 2px 3px 7px 2px rgba(0,0,0,0.02);\n    }\n    a:link, a:visited {\n        color: #38488f;\n        text-decoration: none;\n    }\n    @media (max-width: 700px) {\n        div {\n            margin: 0 auto;\n            width: auto;\n        }\n    }\n    </style>    \n</head>\n\n<body>\n<div>\n    <h1>Example Domain</h1>\n    <p>This domain is for use in illustrative examples in documents. You may use this\n    domain in literature without prior coordination or asking for permission.</p>\n    <p><a href=\"https://www.iana.org/domains/example\">More information...</a></p>\n</div>\n\n\n</body></html>"
+    }
+  },
+  "summary": {
+    "root": "https://example.com",
+    "visited": 1,
+    "success": 1,
+    "error": 0
+  }
+}
+```
+</details>
+
+<details>
+<summary>Crawl part of a site and audit each page</summary>
+
+```bash
+ta11y https://en.wikipedia.org --crawl --max-depth 1 --max-visit 8
+```
+
+This example will crawl and extract the target site locally and then perform a remote audit of the results. You can use the `--remote` flag to force the whole process to operate remotely.
+</details>
+
+<details>
+<summary>Audit a localhost site</summary>
+
+```bash
+ta11y http://localhost:3000 --crawl
+```
+
+This example will crawl all pages of a local site and then perform an audit of the results. Note that the local site does not have to be publicly accessible.
+</details>
+
+<details>
+<summary>Audit a localhost site</summary>
+
+```bash
+ta11y http://localhost:3000 --crawl
+```
+
+This example will crawl all pages of a local site and then perform an audit of the results. Note that the local site does not have to be publicly accessible.
+</details>
 
 ## License
 
