@@ -31,6 +31,8 @@ Options:
                                  must be publicly accessible). Default is to
                                  run content extraction locally. (default:
                                  false)
+  -e, --extract-only             Only run content extraction and disable
+                                 auditing. (default: false)
   -c, --crawl                    Enable crawling additional pages. (default:
                                  false)
   -d, --max-depth <int>          Maximum crawl depth. (default: 16)
@@ -113,6 +115,7 @@ ta11y https://example.com
   }
 }
 ```
+
 </details>
 
 <details>
@@ -139,6 +142,7 @@ ta11y https://example.com --extract-only
   }
 }
 ```
+
 </details>
 
 <details>
@@ -149,6 +153,7 @@ ta11y https://en.wikipedia.org --crawl --max-depth 1 --max-visit 8
 ```
 
 This example will crawl and extract the target site locally and then perform a remote audit of the results. You can use the `--remote` flag to force the whole process to operate remotely.
+
 </details>
 
 <details>
@@ -159,6 +164,7 @@ ta11y http://localhost:3000 --crawl
 ```
 
 This example will crawl all pages of a local site and then perform an audit of the results. Note that the local site does not have to be publicly accessible.
+
 </details>
 
 <details>
@@ -169,6 +175,7 @@ ta11y http://localhost:3000 --crawl
 ```
 
 This example will crawl all pages of a local site and then perform an audit of the results. Note that the local site does not have to be publicly accessible.
+
 </details>
 
 ## License
