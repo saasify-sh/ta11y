@@ -20,6 +20,11 @@ module.exports = async (argv) => {
       'Run all content extraction remotely (website must be publicly accessible). Default is to run content extraction locally.',
       false
     )
+    .option(
+      '-e, --extract-only',
+      'Only run content extraction and disable auditing.',
+      false
+    )
     .option('-c, --crawl', 'Enable crawling additional pages.', false)
     .option('-d, --max-depth <int>', 'Maximum crawl depth.', 16, (s) =>
       parseInt(s)
@@ -76,7 +81,8 @@ module.exports = async (argv) => {
     'blacklist',
     'whitelist',
     'userAgent',
-    'emulateDevice'
+    'emulateDevice',
+    'extractOnly'
   ])
 
   if (!program.remote) {
