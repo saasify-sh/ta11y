@@ -119,7 +119,7 @@ ta11y https://example.com
 </details>
 
 <details>
-<summary>Basic single page extraction</summary>
+<summary>Basic single page content extraction</summary>
 
 ```bash
 ta11y https://example.com --extract-only
