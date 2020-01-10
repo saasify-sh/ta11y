@@ -9,6 +9,10 @@ const { Ta11y } = require('@ta11y/core')
 const { version } = require('../package')
 
 module.exports = async (argv) => {
+  if (!process.stdout.columns) {
+    process.stdout.columns = 100
+  }
+
   program
     .name('ta11y')
     .version(version)

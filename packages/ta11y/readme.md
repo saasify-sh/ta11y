@@ -27,28 +27,20 @@ Options:
   -V, --version                  output the version number
   --api-key <string>             Optional API key.
   --api-base-url <string>        Optional API base URL.
-  -r, --remote                   Run all content extraction remotely (website
-                                 must be publicly accessible). Default is to
-                                 run content extraction locally. (default:
-                                 false)
-  -e, --extract-only             Only run content extraction and disable
-                                 auditing. (default: false)
-  -c, --crawl                    Enable crawling additional pages. (default:
-                                 false)
+  -r, --remote                   Run all content extraction remotely (website must be publicly
+                                 accessible). Default is to run content extraction locally.
+                                 (default: false)
+  -e, --extract-only             Only run content extraction and disable auditing. (default: false)
+  -c, --crawl                    Enable crawling additional pages. (default: false)
   -d, --max-depth <int>          Maximum crawl depth. (default: 16)
-  -v, --max-visit <int>          Maximum number of pages to visit while
-                                 crawling. (default: 16)
-  -S, --no-same-origin           By default, we only crawling links with the
-                                 same origin as the root. Disables this
-                                 behavior so we crawl links with any origin.
-  -b, --blacklist <strings>      Optional comma-separated array of URL glob
-                                 patterns to ignore.
-  -w, --whitelist <strings>      Optional comma-separated array of URL glob
-                                 patterns to include.
+  -v, --max-visit <int>          Maximum number of pages to visit while crawling. (default: 16)
+  -S, --no-same-origin           By default, we only crawling links with the same origin as the
+                                 root. Disables this behavior so we crawl links with any origin.
+  -b, --blacklist <strings>      Optional comma-separated array of URL glob patterns to ignore.
+  -w, --whitelist <strings>      Optional comma-separated array of URL glob patterns to include.
   -u, --user-agent <string>      Optional user-agent override.
   -e, --emulate-device <string>  Optionally emulate a specific device type.
-  -H, --no-headless <string>     Disables headless mode for puppeteer. Useful
-                                 for debugging.
+  -H, --no-headless <string>     Disables headless mode for puppeteer. Useful for debugging.
   -h, --help                     output usage information
 ```
 
@@ -64,7 +56,7 @@ See [@ta11y/core](https://github.com/saasify-sh/ta11y/tree/master/packages/ta11y
 
 The free tier is subject to rate limits as well as a 60 second timeout, so if you're crawling a larger site, you're better off running content extraction locally.
 
-If you're processing a non-publicly accessible website (like `localhost`), then you *must* perform content extraction locally.
+If you're processing a non-publicly accessible website (like `localhost`), then you _must_ perform content extraction locally.
 
 You can bypass rate limiting by [signing up](https://ta11y.saasify.sh/pricing) for an API key and passing it either via the `--api-key` flag or via the `TA11Y_API_KEY` environment variable.
 
@@ -168,6 +160,7 @@ ta11y http://localhost:3000 --crawl
 ```
 
 This example will crawl all pages of a local site and then perform an audit of the results. Note that the local site does not have to be publicly accessible as content extraction happens locally.
+
 </details>
 
 ## License
