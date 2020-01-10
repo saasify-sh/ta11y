@@ -61,7 +61,7 @@ ta11y.audit('<!doctype><html><body><h1>I ❤ accessibility</h1></body></html>')
 
 ### API Key
 
-The free tier is subject to rate limits as well as a 60 second timeout, so if you're crawling a site, you're better off running content extraction locally.
+The free tier is subject to rate limits as well as a 60 second timeout, so if you're crawling a larger site, you're better off running content extraction locally.
 
 If you're processing a non-publicly accessible website (like `localhost`), then you *must* perform content extraction locally.
 
