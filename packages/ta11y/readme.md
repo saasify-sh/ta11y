@@ -33,7 +33,7 @@ Options:
   -e, --extract-only             Only run content extraction and disable auditing. (default: false)
   -s, --suites <strings>         Optional comma-separated array of test suites to run. (section508,
                                  wcag2a, wcag2aa, wcag2aaa, best-practice, html). Defaults to
-                                 wcag2aa.
+                                 running all audit suites.
   -c, --crawl                    Enable crawling additional pages. (default: false)
   -d, --max-depth <int>          Maximum crawl depth. (default: 16)
   -v, --max-visit <int>          Maximum number of pages to visit while crawling. (default: 16)
@@ -70,51 +70,113 @@ Visit [ta11y](https://ta11y.saasify.sh) once you're ready to sign up for an API 
 <details>
 <summary>Basic single page audit</summary>
 
+This example runs all available audit test suites on the given URL.
+
 ```bash
 ta11y https://example.com
 ```
 
 ```json
 {
-  "summary": {},
+  "summary": {
+    "errors": 4,
+    "warnings": 0,
+    "infos": 2,
+    "numPages": 1,
+    "numPagesPass": 0,
+    "numPagesFail": 1
+  },
   "results": {
     "https://example.com": {
       "url": "https://example.com",
       "depth": 0,
       "rules": [
         {
-          "code": "html-has-lang",
+          "id": "html",
+          "description": "A document must not include both a “meta” element with an “http-equiv” attribute whose value is “content-type”, and a “meta” element with a “charset” attribute.",
+          "context": "f-8\">\n    <meta http-equiv=\"Content-type\" content=\"text/html; charset=utf-8\">\n    <",
           "type": "error",
-          "message": "<html> element must have a lang attribute (https://dequeuniversity.com/rules/axe/3.4/html-has-lang?application=axeAPI)",
+          "tags": [
+            "html"
+          ],
+          "firstColumn": 5,
+          "lastLine": 5,
+          "lastColumn": 71
+        },
+        {
+          "id": "html",
+          "description": " The “type” attribute for the “style” element is not needed and should be omitted.",
+          "context": "e=1\">\n    <style type=\"text/css\">\n    b",
+          "type": "info",
+          "tags": [
+            "html"
+          ],
+          "firstColumn": 5,
+          "lastLine": 7,
+          "lastColumn": 27
+        },
+        {
+          "id": "html",
+          "description": "Consider adding a “lang” attribute to the “html” start tag to declare the language of this document.",
+          "context": "TYPE html><html><head>",
+          "type": "info",
+          "tags": [
+            "html"
+          ],
+          "firstColumn": 16,
+          "lastLine": 1,
+          "lastColumn": 21
+        },
+        {
+          "id": "html-has-lang",
+          "type": "error",
           "description": "Ensures every HTML document has a lang attribute",
           "impact": "serious",
+          "tags": [
+            "cat.language",
+            "wcag2a",
+            "wcag311"
+          ],
           "help": "<html> element must have a lang attribute",
-          "helpUrl": "https://dequeuniversity.com/rules/axe/3.4/html-has-lang?application=axeAPI"
+          "helpUrl": "https://dequeuniversity.com/rules/ta11y/3.4/html-has-lang?application=Ta11y%20API"
         },
         {
-          "code": "landmark-one-main",
+          "id": "landmark-one-main",
           "type": "error",
-          "message": "Document must have one main landmark (https://dequeuniversity.com/rules/axe/3.4/landmark-one-main?application=axeAPI)",
           "description": "Ensures the document has only one main landmark and each iframe in the page has at most one main landmark",
           "impact": "moderate",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
           "help": "Document must have one main landmark",
-          "helpUrl": "https://dequeuniversity.com/rules/axe/3.4/landmark-one-main?application=axeAPI"
+          "helpUrl": "https://dequeuniversity.com/rules/ta11y/3.4/landmark-one-main?application=Ta11y%20API"
         },
         {
-          "code": "region",
+          "id": "region",
           "type": "error",
-          "message": "All page content must be contained by landmarks (https://dequeuniversity.com/rules/axe/3.4/region?application=axeAPI)",
           "description": "Ensures all page content is contained by landmarks",
           "impact": "moderate",
+          "tags": [
+            "cat.keyboard",
+            "best-practice"
+          ],
           "help": "All page content must be contained by landmarks",
-          "helpUrl": "https://dequeuniversity.com/rules/axe/3.4/region?application=axeAPI"
+          "helpUrl": "https://dequeuniversity.com/rules/ta11y/3.4/region?application=Ta11y%20API"
         }
-      ]
+      ],
+      "summary": {
+        "errors": 4,
+        "warnings": 0,
+        "infos": 2,
+        "pass": false
+      }
     }
   }
 }
 ```
 
+If you only want specific audit results, use the `--suite` option.
 </details>
 
 <details>
@@ -141,7 +203,6 @@ ta11y https://example.com --extract-only
   }
 }
 ```
-
 </details>
 
 <details>
@@ -151,8 +212,7 @@ ta11y https://example.com --extract-only
 ta11y https://en.wikipedia.org --crawl --max-depth 1 --max-visit 8
 ```
 
-This example will crawl and extract the target site locally and then perform a remote audit of the results. You can use the `--remote` flag to force the whole process to operate remotely.
-
+This example will crawl and extract the target site locally and then perform a full remote audit of the results. You can use the `--remote` flag to force the whole process to operate remotely.
 </details>
 
 <details>
@@ -162,8 +222,109 @@ This example will crawl and extract the target site locally and then perform a r
 ta11y http://localhost:3000 --crawl
 ```
 
-This example will crawl all pages of a local site and then perform an audit of the results. Note that the local site does not have to be publicly accessible as content extraction happens locally.
+This example will crawl all pages of a local site and then perform an audit of the results.
 
+Note that the local site does not have to be publicly accessible as content extraction happens locally.
+</details>
+
+<details>
+<summary>Run a WCAG2AA audit on a localhost site</summary>
+
+```bash
+ta11y http://localhost:3000 --crawl --suites wcag2aa
+```
+
+This example will crawl all pages of a local site and then perform an audit of the results, **only considering the WCAG2AA test suite**.
+
+Note that the local site does not have to be publicly accessible as content extraction happens locally.
+</details>
+
+<details>
+<summary>Single page audit using WCAG2A and HTML validation test suites</summary>
+
+```bash
+ta11y https://example.com --suites wcag2a,html
+```
+
+```json
+{
+  "summary": {
+    "suites": [
+      "wcag2a",
+      "html"
+    ],
+    "errors": 2,
+    "warnings": 0,
+    "infos": 2,
+    "numPages": 1,
+    "numPagesPass": 0,
+    "numPagesFail": 1
+  },
+  "results": {
+    "https://example.com": {
+      "url": "https://example.com",
+      "depth": 0,
+      "rules": [
+        {
+          "id": "html",
+          "description": "A document must not include both a “meta” element with an “http-equiv” attribute whose value is “content-type”, and a “meta” element with a “charset” attribute.",
+          "context": "f-8\">\n    <meta http-equiv=\"Content-type\" content=\"text/html; charset=utf-8\">\n    <",
+          "type": "error",
+          "tags": [
+            "html"
+          ],
+          "firstColumn": 5,
+          "lastLine": 5,
+          "lastColumn": 71
+        },
+        {
+          "id": "html",
+          "description": " The “type” attribute for the “style” element is not needed and should be omitted.",
+          "context": "e=1\">\n    <style type=\"text/css\">\n    b",
+          "type": "info",
+          "tags": [
+            "html"
+          ],
+          "firstColumn": 5,
+          "lastLine": 7,
+          "lastColumn": 27
+        },
+        {
+          "id": "html",
+          "description": "Consider adding a “lang” attribute to the “html” start tag to declare the language of this document.",
+          "context": "TYPE html><html><head>",
+          "type": "info",
+          "tags": [
+            "html"
+          ],
+          "firstColumn": 16,
+          "lastLine": 1,
+          "lastColumn": 21
+        },
+        {
+          "id": "html-has-lang",
+          "type": "error",
+          "description": "Ensures every HTML document has a lang attribute",
+          "impact": "serious",
+          "tags": [
+            "cat.language",
+            "wcag2a",
+            "wcag311"
+          ],
+          "help": "<html> element must have a lang attribute",
+          "helpUrl": "https://dequeuniversity.com/rules/ta11y/3.4/html-has-lang?application=Ta11y%20API"
+        }
+      ],
+      "summary": {
+        "errors": 2,
+        "warnings": 0,
+        "infos": 2,
+        "pass": false
+      }
+    }
+  }
+}
+```
 </details>
 
 ## License

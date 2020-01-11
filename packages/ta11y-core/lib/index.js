@@ -5,10 +5,11 @@ const got = require('got')
 const pick = require('lodash.pick')
 const isHtml = require('is-html')
 const isUrl = require('is-url-superb')
-const util = require('util')
-const zlib = require('zlib')
+// const util = require('util')
+// const zlib = require('zlib')
 
-const gzip = util.promisify(zlib.gzip.bind(zlib))
+// TODO: ZEIT now seems to have a bug with handling content-encoding compression
+// const gzip = util.promisify(zlib.gzip.bind(zlib))
 
 /**
  * Class to run web accessibility audits via the [ta11y API](https://ta11y.saasify.sh).
@@ -49,13 +50,15 @@ exports.Ta11y = class Ta11y {
    *
    * @param {string} urlOrHtml - URL or raw HTML to process.
    * @param {object} opts - Config options.
-   * @param {string[]} [opts.suites=['wcag2aa']] - Optional array of audit suites to run. Possible values:
+   * @param {string[]} [opts.suites] - Optional array of audit suites to run. Possible values:
    * - `section508`
    * - `wcag2a`
    * - `wcag2aa`
    * - `wcag2aaa`
    * - `best-practice`
    * - `html`
+   *
+   * Defaults to running all audit suites.
    * @param {object} [opts.browser] - Optional [Puppeteer](https://pptr.dev) browser instance to use for auditing websites that aren't publicly reachable.
    * @param {boolean} [opts.extractOnly=false] - Whether or not to perform extraction and auditing, or just extraction. By default, a full audit is performed, but in some cases it can be useful to store the extraction results for later processing.
    * @param {boolean} [opts.crawl=false] - Whether or not to crawl additional pages.
@@ -95,7 +98,7 @@ exports.Ta11y = class Ta11y {
    * @param {object} extractResults - Extraction results conforming to the output format
    * from `@ta11y/extract`.
    * @param {object} opts - Config options.
-   * @param {string[]} [opts.suites=['wcag2aa']] - Optional array of audit suites to run. Possible values:
+   * @param {string[]} [opts.suites] - Optional array of audit suites to run. Possible values:
    * - `section508`
    * - `wcag2a`
    * - `wcag2aa`
@@ -103,14 +106,16 @@ exports.Ta11y = class Ta11y {
    * - `best-practice`
    * - `html`
    *
+   * Defaults to running all audits suites.
    * @return {Promise}
    */
-  async auditExtractResults(extractResults, opts) {
+  async auditExtractResults(extractResults, opts = {}) {
     const bodyRaw = JSON.stringify({
       ...pick(opts, ['suites', 'rules']),
       extractResults
     })
-    const body = await gzip(Buffer.from(bodyRaw))
+    // const body = await gzip(Buffer.from(bodyRaw))
+    const body = bodyRaw
 
     const apiAuditUrl = `${this._apiBaseUrl}/auditExtractResults`
     const res = await got.post(apiAuditUrl, {
@@ -118,8 +123,8 @@ exports.Ta11y = class Ta11y {
       headers: {
         ...this._headers,
         accept: 'application/json',
-        'content-type': 'application/json',
-        'content-encoding': 'gzip'
+        'content-type': 'application/json'
+        // 'content-encoding': 'gzip'
       },
       responseType: 'json'
     })
