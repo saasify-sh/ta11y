@@ -31,6 +31,9 @@ Options:
                                  accessible). Default is to run content extraction locally.
                                  (default: false)
   -e, --extract-only             Only run content extraction and disable auditing. (default: false)
+  -s, --suites <strings>         Optional comma-separated array of test suites to run. (section508,
+                                 wcag2a, wcag2aa, wcag2aaa, best-practice, html). Defaults to
+                                 wcag2aa.
   -c, --crawl                    Enable crawling additional pages. (default: false)
   -d, --max-depth <int>          Maximum crawl depth. (default: 16)
   -v, --max-visit <int>          Maximum number of pages to visit while crawling. (default: 16)
