@@ -44,6 +44,7 @@ Options:
   -u, --user-agent <string>      Optional user-agent override.
   -e, --emulate-device <string>  Optionally emulate a specific device type.
   -H, --no-headless <string>     Disables headless mode for puppeteer. Useful for debugging.
+  -P, --no-progress              Disables progress logging.
   -h, --help                     output usage information
 ```
 
