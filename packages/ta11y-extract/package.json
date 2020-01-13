@@ -1,6 +1,6 @@
 {
   "name": "@ta11y/extract",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "Extracts content from websites for running accessibility audits with ta11y.",
   "main": "./lib/index.js",
   "author": "Saasify <dev@saasify.sh>",

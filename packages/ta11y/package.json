@@ -1,6 +1,6 @@
 {
   "name": "@ta11y/ta11y",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "CLI for running web accessibility audits with ta11y.",
   "main": "index.js",
   "author": "Saasify <dev@saasify.sh>",
@@ -40,7 +40,7 @@
     "snapshotDir": "./.snapshots"
   },
   "dependencies": {
-    "@ta11y/core": "^1.0.9",
+    "@ta11y/core": "^1.0.10",
     "commander": "^4.1.0",
     "lodash.pick": "^4.4.0",
     "puppeteer": "^2.0.0"
