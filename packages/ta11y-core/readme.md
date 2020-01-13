@@ -25,7 +25,7 @@ const ta11y = new Ta11y()
 
 ta11y.audit('https://en.wikipedia.org')
   .then((results) => {
-    console.log(results)
+    console.log(JSON.stringify(results, null, 2))
   })
 ```
 

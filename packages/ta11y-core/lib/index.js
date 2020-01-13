@@ -76,6 +76,8 @@ exports.Ta11y = class Ta11y {
    * @param {string} [opts.emulateDevice] - Emulate a specific device type.
    * - Use the `name` property from one of the built-in [devices](https://github.com/GoogleChrome/puppeteer/blob/master/lib/DeviceDescriptors.js).
    * - Overrides `viewport` and `userAgent`.
+   * @param {function} [opts.onNewPage] - Optional async function called every time a new page is
+   * initialized before proceeding with extraction.
    *
    * @return {Promise}
    */
@@ -168,6 +170,9 @@ exports.Ta11y = class Ta11y {
 
     delete opts.extractOnly
     delete opts.progress
+
+    // TODO: support this remotely as well
+    delete opts.onNewPage
 
     const res = await progressSpinner(
       got.post(apiUrl, {

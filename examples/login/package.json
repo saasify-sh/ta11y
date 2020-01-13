@@ -1,0 +1,19 @@
+{
+  "name": "ta11y-example-login",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Example auditing a site that requires login.",
+  "main": "index.js",
+  "license": "MIT",
+  "engines": {
+    "node": ">=8"
+  },
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@ta11y/core": "^1.0.7",
+    "dotenv-safe": "^8.2.0",
+    "puppeteer": "^2.0.0"
+  }
+}

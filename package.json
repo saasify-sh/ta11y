@@ -56,7 +56,8 @@
     "prettier": "^1.19.1"
   },
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "examples/*"
   ],
   "husky": {
     "hooks": {

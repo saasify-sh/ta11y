@@ -32,6 +32,8 @@ const { devices } = require('puppeteer-core')
  * @param {string} [opts.emulateDevice] - Emulate a specific device type.
  * - Use the `name` property from one of the built-in [devices](https://github.com/GoogleChrome/puppeteer/blob/master/lib/DeviceDescriptors.js).
  * - Overrides `viewport` and `userAgent`.
+ * @param {function} [opts.onNewPage] - Optional async function called every time a new page is
+ * initialized before proceeding with extraction.
  *
  * @return {Promise}
  */
@@ -54,7 +56,14 @@ exports.extract = async function extract(urlOrHtml, opts) {
   }
 
   ow(url, 'url', ow.string.nonEmpty)
-  ow(opts, 'opts', ow.object.plain.partialShape({ browser: ow.object }))
+  ow(
+    opts,
+    'opts',
+    ow.object.plain.partialShape({
+      browser: ow.object,
+      onNewPage: ow.optional.function
+    })
+  )
 
   debug('extract', url)
 
@@ -227,7 +236,8 @@ async function getPage(url, opts) {
     opts,
     'opts',
     ow.object.plain.partialShape({
-      browser: ow.object
+      browser: ow.object,
+      onNewPage: ow.optional.function
     })
   )
 
@@ -256,6 +266,10 @@ async function getPage(url, opts) {
   } else {
     ow(url, 'url', ow.string.nonEmpty.url)
     await page.goto(url, opts.gotoOptions)
+  }
+
+  if (opts.onNewPage) {
+    await Promise.resolve(opts.onNewPage(page, opts))
   }
 
   return page
