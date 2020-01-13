@@ -266,7 +266,10 @@ async function getPage(url, opts) {
     await page.setContent(opts.html)
   } else {
     ow(url, 'url', ow.string.nonEmpty.url)
-    await page.goto(url, opts.gotoOptions)
+    await page.goto(url, {
+      // waitUntil: 'networkidle2',
+      ...opts.gotoOptions
+    })
   }
 
   if (opts.onNewPage) {

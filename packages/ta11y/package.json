@@ -7,7 +7,7 @@
   "repository": "saasify-sh/ta11y",
   "license": "MIT",
   "engines": {
-    "node": ">=8"
+    "node": ">=10"
   },
   "bin": {
     "ta11y": "./index.js"

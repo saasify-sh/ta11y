@@ -128,21 +128,25 @@ exports.Ta11y = class Ta11y {
     const body = bodyRaw
 
     const apiAuditUrl = `${this._apiBaseUrl}/auditExtractResults`
-    const res = await progressSpinner(
-      got.post(apiAuditUrl, {
-        body,
-        headers: {
-          ...this._headers,
-          accept: 'application/json',
-          'content-type': 'application/json'
-          // 'content-encoding': 'gzip'
-        },
-        responseType: 'json'
-      }),
-      'Auditing extraction results'
-    )
+    try {
+      const res = await progressSpinner(
+        got.post(apiAuditUrl, {
+          body,
+          headers: {
+            ...this._headers,
+            accept: 'application/json',
+            'content-type': 'application/json'
+            // 'content-encoding': 'gzip'
+          },
+          responseType: 'json'
+        }),
+        'Auditing extraction results'
+      )
 
-    return JSON.parse(res.body)
+      return JSON.parse(res.body)
+    } catch (err) {
+      throw new Error(`Auditing failed: ${err.message}`)
+    }
   }
 
   /**
@@ -174,19 +178,23 @@ exports.Ta11y = class Ta11y {
     // TODO: support this remotely as well
     delete opts.onNewPage
 
-    const res = await progressSpinner(
-      got.post(apiUrl, {
-        body: {
-          ...opts,
-          url,
-          html
-        },
-        headers: this._headers,
-        json: true
-      }),
-      label
-    )
+    try {
+      const res = await progressSpinner(
+        got.post(apiUrl, {
+          body: {
+            ...opts,
+            url,
+            html
+          },
+          headers: this._headers,
+          json: true
+        }),
+        label
+      )
 
-    return res.body
+      return res.body
+    } catch (err) {
+      throw new Error(`Auditing failed: ${err.message}`)
+    }
   }
 }
