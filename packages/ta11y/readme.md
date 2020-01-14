@@ -184,6 +184,16 @@ If you only want specific audit results, use the `--suite` option.
 </details>
 
 <details>
+<summary>Single page audit of WCAG 2.0 A and WCAG 2.0 AA outputing to `xls`</summary>
+
+This example runs wcag2a and wcag2aa audit test suites on the given URL and outputs the results to an Excel spreadsheet file (`xls`).
+
+```bash
+ta11y https://example.com --suites wcag2a,wcag2aa -o audit.xls
+```
+</details>
+
+<details>
 <summary>Basic single page content extraction</summary>
 
 ```bash
