@@ -57,7 +57,7 @@
   },
   "workspaces": [
     "packages/*",
-    "examples/*"
+    "examples/login"
   ],
   "husky": {
     "hooks": {

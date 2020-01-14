@@ -178,6 +178,15 @@ async function visitPage(opts) {
     )
   } catch (err) {
     // silently ignore any page that fails to initialize as its URL must be invalid
+    if (process.env.DEBUG) {
+      debug('visitPage error %O', {
+        url,
+        error: err.toString(),
+        depth,
+        queue: opts.queue.size,
+        ...getSummary(opts)
+      })
+    }
   }
 }
 
