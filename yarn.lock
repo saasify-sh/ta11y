@@ -1330,10 +1330,10 @@
   dependencies:
     defer-to-connect "^1.0.1"
 
-"@ta11y/on-prem@^0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@ta11y/on-prem/-/on-prem-0.1.0.tgz#2ccfb5cf269a7211996987205542a771215d56bb"
-  integrity sha512-S7wyoopBMW6nR3aXs471wDgxOx6YrGvODmIqL0PedTKqPF7ziG0UnyTSXhvYXDMCP1uN+rrZ7ftaMS+9yr4rWQ==
+"@ta11y/on-prem@^0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@ta11y/on-prem/-/on-prem-0.1.1.tgz#15e336e43438928e9e1655ffedde0997877c8a8e"
+  integrity sha512-b8B0L68ec5PLmpdrze6VMDxcV13Tdv/3LBrzXC6sFkLKU1jUJXiEg4fRZ8BnARTDU6j52tN71kqz7bG1vCgzJQ==
   dependencies:
     "@ta11y/extract" "^1.0.0"
     chrome-aws-lambda "^2.0.2"

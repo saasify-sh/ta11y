@@ -9,11 +9,11 @@ const main = async () => {
   const browser = await puppeteer.launch({ headless: false, slowMo: 10 })
   const ta11y = new Ta11y()
 
-  const extractResults = await ta11y.audit('https://instagram.com', {
+  const extractResults = await ta11y.audit('https://example.com', {
     browser,
     crawl: true,
     maxDepth: 1,
-    maxVisit: 4,
+    maxVisit: 1,
     extractOnly: true
   })
   browser.close()
