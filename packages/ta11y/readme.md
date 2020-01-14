@@ -36,14 +36,14 @@ Options:
                                  running all audit suites.
   -c, --crawl                    Enable crawling additional pages. (default: false)
   -d, --max-depth <int>          Maximum crawl depth. (default: 16)
-  -v, --max-visit <int>          Maximum number of pages to visit while crawling. (default: 16)
+  -v, --max-visit <int>          Maximum number of pages to visit while crawling.
   -S, --no-same-origin           By default, we only crawling links with the same origin as the
                                  root. Disables this behavior so we crawl links with any origin.
   -b, --blacklist <strings>      Optional comma-separated array of URL glob patterns to ignore.
   -w, --whitelist <strings>      Optional comma-separated array of URL glob patterns to include.
   -u, --user-agent <string>      Optional user-agent override.
   -e, --emulate-device <string>  Optionally emulate a specific device type.
-  -H, --no-headless <string>     Disables headless mode for puppeteer. Useful for debugging.
+  -H, --no-headless              Disables headless mode for puppeteer. Useful for debugging.
   -P, --no-progress              Disables progress logging.
   -h, --help                     output usage information
 ```
