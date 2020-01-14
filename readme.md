@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://ta11y.saasify.sh" title="ta11y">
-    <img src="https://raw.githubusercontent.com/saasify-sh/ta11y/master/media/logo.svg?sanitize=true" alt="ta11y Logo" width="256" />
+    <img src="https://storage.googleapis.com/saasify-uploads-prod/c5480c7c4e006629b4a2f7bfc5b783e2fce662ec.jpeg" alt="ta11y Logo" />
   </a>
 </p>
 
@@ -10,9 +10,30 @@
 
 [![NPM](https://img.shields.io/npm/v/@ta11y/ta11y.svg)](https://www.npmjs.com/package/@ta11y/ta11y) [![Build Status](https://travis-ci.com/saasify-sh/ta11y.svg?branch=master)](https://travis-ci.com/saasify-sh/ta11y) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
+<p align="center">
+  <a href="https://ta11y.saasify.sh" title="ta11y">
+    <img src="https://raw.githubusercontent.com/saasify-sh/ta11y/master/media/logo.svg?sanitize=true" alt="ta11y Logo" width="256" />
+  </a>
+</p>
+
+## Features
+
+- **Accessibility as a service**
+  - Audit your websites with a range of test suites including WCAG 2.0/2.1 A, AA, AAA, Section 508, HTML validation, as well as our own best practices.
+- **Flexible and automated**
+  - Run manual tests during development and then integrate into any CI pipeline. Supports generating reports in XLS, XLSX, CSV, JSON, HTML, and more.
+- **Runs in any environment**
+  - Easy integration that supports localhost, firewalls, custom auth, as well as any public production environment.
+- **Modern dynamic websites**
+  - Ta11y treats all websites as dynamic with full JavaScript support, so you'll test pages as your users actually experience them.
+- **Free to try**
+  - Simple to get started for free, then [sign up](/pricing) once you're ready to remove rate limits.
+- **Private & secure**
+  - Ta11y is built using serverless functions and never stores any of your data or audit results.
+
 ## Usage
 
-This project is broken down into the following modules:
+This project is broken down into the following packages:
 
 - [@ta11y/ta11y](./packages/ta11y) - Main CLI for running web accessibility audits with ta11y.
 - [@ta11y/core](./packages/ta11y-core) - Core library for programatically running web accessibility audits with ta11y.
