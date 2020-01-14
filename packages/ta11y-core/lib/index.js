@@ -57,6 +57,7 @@ exports.Ta11y = class Ta11y {
    * @param {string} urlOrHtml - URL or raw HTML to process.
    * @param {object} opts - Config options.
    * @param {string[]} [opts.suites] - Optional array of audit suites to run. Possible values:
+   *
    * - `section508`
    * - `wcag2a`
    * - `wcag2aa`
@@ -150,6 +151,7 @@ exports.Ta11y = class Ta11y {
    * from `@ta11y/extract`.
    * @param {object} opts - Config options.
    * @param {string[]} [opts.suites] - Optional array of audit suites to run. Possible values:
+   *
    * - `section508`
    * - `wcag2a`
    * - `wcag2aa`

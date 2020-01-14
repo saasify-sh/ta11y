@@ -146,67 +146,7 @@ ta11y https://example.com
           "lastLine": 5,
           "lastColumn": 71
         },
-        {
-          "id": "html",
-          "description": " The “type” attribute for the “style” element is not needed and should be omitted.",
-          "context": "e=1\">\n    <style type=\"text/css\">\n    b",
-          "type": "info",
-          "tags": [
-            "html"
-          ],
-          "firstColumn": 5,
-          "lastLine": 7,
-          "lastColumn": 27
-        },
-        {
-          "id": "html",
-          "description": "Consider adding a “lang” attribute to the “html” start tag to declare the language of this document.",
-          "context": "TYPE html><html><head>",
-          "type": "info",
-          "tags": [
-            "html"
-          ],
-          "firstColumn": 16,
-          "lastLine": 1,
-          "lastColumn": 21
-        },
-        {
-          "id": "html-has-lang",
-          "type": "error",
-          "description": "Ensures every HTML document has a lang attribute",
-          "impact": "serious",
-          "tags": [
-            "cat.language",
-            "wcag2a",
-            "wcag311"
-          ],
-          "help": "<html> element must have a lang attribute",
-          "helpUrl": "https://dequeuniversity.com/rules/ta11y/3.4/html-has-lang?application=Ta11y%20API"
-        },
-        {
-          "id": "landmark-one-main",
-          "type": "error",
-          "description": "Ensures the document has only one main landmark and each iframe in the page has at most one main landmark",
-          "impact": "moderate",
-          "tags": [
-            "cat.semantics",
-            "best-practice"
-          ],
-          "help": "Document must have one main landmark",
-          "helpUrl": "https://dequeuniversity.com/rules/ta11y/3.4/landmark-one-main?application=Ta11y%20API"
-        },
-        {
-          "id": "region",
-          "type": "error",
-          "description": "Ensures all page content is contained by landmarks",
-          "impact": "moderate",
-          "tags": [
-            "cat.keyboard",
-            "best-practice"
-          ],
-          "help": "All page content must be contained by landmarks",
-          "helpUrl": "https://dequeuniversity.com/rules/ta11y/3.4/region?application=Ta11y%20API"
-        }
+        ...
       ],
       "summary": {
         "errors": 4,
@@ -226,7 +166,7 @@ If you only want specific audit results, use the `--suite` option.
 <details>
 <summary>Basic single page audit writing results to an Excel file</summary>
 
-This example runs wcag2a and wcag2aa audit test suites on the given URL and outputs the results to an Excel spreadsheet (supports any `xls`, `xlsx`, or `csv` file).
+This example runs the wcag2a and wcag2aa audit test suites on the given URL and outputs the results to an Excel spreadsheet (supports any `xls`, `xlsx`, or `csv` file).
 
 ```bash
 ta11y https://example.com -o audit.xls
@@ -401,7 +341,7 @@ ta11y https://example.com --suites wcag2a,html
   <a href="https://ta11y.saasify.sh" title="ta11y">
     <img src="https://storage.googleapis.com/saasify-uploads-prod/c5480c7c4e006629b4a2f7bfc5b783e2fce662ec.jpeg" alt="ta11y Logo" />
   </a>
-  <span>Help us with our goal of building a more accessible and inclusive web! ☺️</span>
+  <span>Help us with our goal of building a more accessible and inclusive web. ☺️</span>
 </p>
 
 ## License
