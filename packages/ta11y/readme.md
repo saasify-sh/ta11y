@@ -25,8 +25,8 @@ Usage: ta11y [options] <url>
 
 Options:
   -V, --version                  output the version number
-  --api-key <string>             Optional API key.
-  --api-base-url <string>        Optional API base URL.
+  -o, --output <file>            Output the results to the given file (format determined by file
+                                 type). Supports xls, xlsx, csv, json, html, txt, etc.
   -r, --remote                   Run all content extraction remotely (website must be publicly
                                  accessible). Default is to run content extraction locally.
                                  (default: false)
@@ -45,6 +45,8 @@ Options:
   -e, --emulate-device <string>  Optionally emulate a specific device type.
   -H, --no-headless              Disables headless mode for puppeteer. Useful for debugging.
   -P, --no-progress              Disables progress logging.
+  --api-key <string>             Optional API key.
+  --api-base-url <string>        Optional API base URL.
   -h, --help                     output usage information
 ```
 

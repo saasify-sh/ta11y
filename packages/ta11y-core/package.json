@@ -36,6 +36,7 @@
   },
   "dependencies": {
     "@ta11y/extract": "^1.1.3",
+    "@ta11y/reporter": "^1.1.4",
     "got": "9",
     "is-html": "^2.0.0",
     "is-url-superb": "^3.0.0",

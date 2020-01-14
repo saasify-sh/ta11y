@@ -29,7 +29,10 @@
     "webhint",
     "lighthouse",
     "audit",
-    "html"
+    "html",
+    "xls",
+    "xlsx",
+    "csv"
   ],
   "ava": {
     "snapshotDir": "./.snapshots"
