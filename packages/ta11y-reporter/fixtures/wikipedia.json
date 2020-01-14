@@ -1,0 +1,102 @@
+{
+  "summary": {
+    "suites": [],
+    "errors": 7,
+    "warnings": 1,
+    "infos": 0,
+    "numPages": 1,
+    "numPagesPass": 0,
+    "numPagesFail": 1
+  },
+  "results": {
+    "https://en.wikipedia.org": {
+      "url": "https://en.wikipedia.org",
+      "depth": 0,
+      "rules": [
+        {
+          "id": "html",
+          "description": "Element “style” not allowed as child of element “div” in this context. (Suppressing further errors from this subtree.)",
+          "context": "hankyou\">\n<style>\n\n/* I",
+          "type": "error",
+          "tags": ["html"],
+          "firstColumn": 1,
+          "lastLine": 53,
+          "lastColumn": 7
+        },
+        {
+          "id": "html",
+          "description": "Bad value “/wiki/Computer_terminal#\"Intelligent\"_terminals” for attribute “href” on element “a”: Illegal character in fragment: “\"” is not allowed.",
+          "context": "l-purpose <a href=\"/wiki/Computer_terminal#&quot;Intelligent&quot;_terminals\" title=\"Computer terminal\">comput",
+          "type": "error",
+          "tags": ["html"],
+          "firstColumn": 141,
+          "lastLine": 2206,
+          "lastColumn": 234
+        },
+        {
+          "id": "html",
+          "description": "CSS: “max-width”: Too many values or values are not recognized.",
+          "context": " 0.5em;\">\n<div class=\"thumbinner mp-thumb\" style=\"background: transparent; border: none; padding: 0; max-width: px;\">\n<a hr",
+          "type": "error",
+          "tags": ["html"],
+          "firstColumn": 1,
+          "lastLine": 2223,
+          "lastColumn": 107
+        },
+        {
+          "id": "html",
+          "description": "Element “style” not allowed as child of element “div” in this context. (Suppressing further errors from this subtree.)",
+          "context": "m 0.6em;\"><style data-mw-deduplicate=\"TemplateStyles:r886190367\">.mw-pa",
+          "type": "error",
+          "tags": ["html"],
+          "firstColumn": 58,
+          "lastLine": 2306,
+          "lastColumn": 112
+        },
+        {
+          "id": "html",
+          "description": "Bad value “simple” for attribute “lang” on element “span”: The language subtag “simple” is not a valid IANA language part of a language tag.",
+          "context": "rg/wiki/\"><span class=\"autonym\" title=\"Simple English (simple:)\" lang=\"simple\">Englis",
+          "type": "error",
+          "tags": ["html"],
+          "firstColumn": 72,
+          "lastLine": 2406,
+          "lastColumn": 140
+        },
+        {
+          "id": "region",
+          "type": "error",
+          "description": "Ensures all page content is contained by landmarks",
+          "impact": "moderate",
+          "tags": ["cat.keyboard", "best-practice"],
+          "help": "All page content must be contained by landmarks",
+          "helpUrl": "https://dequeuniversity.com/rules/ta11y/3.4/region?application=Ta11y%20API"
+        },
+        {
+          "id": "valid-lang",
+          "type": "error",
+          "description": "Ensures lang attributes have valid values",
+          "impact": "serious",
+          "tags": ["cat.language", "wcag2aa", "wcag312"],
+          "help": "lang attribute must have a valid value",
+          "helpUrl": "https://dequeuniversity.com/rules/ta11y/3.4/valid-lang?application=Ta11y%20API"
+        },
+        {
+          "id": "color-contrast",
+          "type": "warning",
+          "description": "Ensures the contrast between foreground and background colors meets WCAG 2 AA contrast ratio thresholds",
+          "impact": "serious",
+          "tags": ["cat.color", "wcag2aa", "wcag143"],
+          "help": "Elements must have sufficient color contrast",
+          "helpUrl": "https://dequeuniversity.com/rules/ta11y/3.4/color-contrast?application=Ta11y%20API"
+        }
+      ],
+      "summary": {
+        "errors": 7,
+        "warnings": 1,
+        "infos": 0,
+        "pass": false
+      }
+    }
+  }
+}

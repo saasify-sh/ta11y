@@ -1,6 +1,6 @@
 'use strict'
 
-const debug = require('debug')('ta11y-extract')
+const debug = require('debug')('ta11y:extract')
 const { URL } = require('url')
 const createError = require('http-errors')
 const isHtml = require('is-html')

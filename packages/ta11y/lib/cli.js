@@ -17,8 +17,10 @@ module.exports = async (argv) => {
     .name('ta11y')
     .version(version)
     .usage('[options] <url>')
-    .option('--api-key <string>', 'Optional API key.')
-    .option('--api-base-url <string>', 'Optional API base URL.')
+    .option(
+      '-o, --output <file>',
+      'Output the results to the given file (format determined by file type). Supports xls, xlsx, csv, json, html, txt, etc.'
+    )
     .option(
       '-r, --remote',
       'Run all content extraction remotely (website must be publicly accessible). Default is to run content extraction locally.',
@@ -67,6 +69,8 @@ module.exports = async (argv) => {
       'Disables headless mode for puppeteer. Useful for debugging.'
     )
     .option('-P, --no-progress', 'Disables progress logging.')
+    .option('--api-key <string>', 'Optional API key.')
+    .option('--api-base-url <string>', 'Optional API base URL.')
 
   program.parse(argv)
 
@@ -83,7 +87,6 @@ module.exports = async (argv) => {
   const url = program.args[0]
 
   const opts = pick(program, [
-    'extractOnly',
     'suites',
     'crawl',
     'maxDepth',
@@ -95,6 +98,8 @@ module.exports = async (argv) => {
     'emulateDevice',
     'progress'
   ])
+
+  opts.file = program.output
 
   if (!program.remote) {
     const browser = await puppeteer.launch({
@@ -110,7 +115,15 @@ module.exports = async (argv) => {
     apiKey: program.apiKey
   })
 
-  const result = await ta11y.audit(url, opts)
+  const results = program.extractOnly
+    ? await ta11y.extract(url, opts)
+    : await ta11y.audit(url, opts)
 
-  console.log(JSON.stringify(result, null, 2))
+  if (opts.file) {
+    if (results.summary) {
+      console.log(JSON.stringify(results.summary, null, 2))
+    }
+  } else {
+    console.log(JSON.stringify(results, null, 2))
+  }
 }

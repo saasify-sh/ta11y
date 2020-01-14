@@ -1,10 +1,13 @@
 'use strict'
 
 const { extract } = require('@ta11y/extract')
+const { formatExtractResults, formatAuditResults } = require('@ta11y/reporter')
+
 const got = require('got')
 const pick = require('lodash.pick')
 const isHtml = require('is-html')
 const isUrl = require('is-url-superb')
+
 // const util = require('util')
 // const zlib = require('zlib')
 
@@ -63,7 +66,6 @@ exports.Ta11y = class Ta11y {
    *
    * Defaults to running all audit suites.
    * @param {object} [opts.browser] - Optional [Puppeteer](https://pptr.dev) browser instance to use for auditing websites that aren't publicly reachable.
-   * @param {boolean} [opts.extractOnly=false] - Whether or not to perform extraction and auditing, or just extraction. By default, a full audit is performed, but in some cases it can be useful to store the extraction results for later processing.
    * @param {boolean} [opts.crawl=false] - Whether or not to crawl additional pages.
    * @param {number} [opts.maxDepth=16] - Maximum crawl depth while crawling.
    * @param {number} [opts.maxVisit] - Maximum number of pages to visit while crawling.
@@ -78,12 +80,57 @@ exports.Ta11y = class Ta11y {
    * - Overrides `viewport` and `userAgent`.
    * @param {function} [opts.onNewPage] - Optional async function called every time a new page is
    * initialized before proceeding with extraction.
+   * @param {string} [opts.file] - Write results to a file (output format determined by file type). See the docs for more info on supported file formats (xls, xlsx, csv, json, html, txt, etc.)
    *
    * @return {Promise}
    */
   async audit(urlOrHtml, opts) {
     if (!opts || !opts.browser) {
-      return this._remoteAudit(urlOrHtml, opts)
+      return this._remoteAudit(urlOrHtml, {
+        ...opts,
+        extractOnly: false
+      })
+    } else {
+      const extractResults = await this.extract(urlOrHtml, opts)
+
+      console.error('extraction results', extractResults.summary)
+      return this.auditExtractResults(extractResults, opts)
+    }
+  }
+
+  /**
+   * Extracts the content from a given URL or raw HTML, optionally crawling the
+   * site to discover additional pages and auditing those too.
+   *
+   * To audit local or private websites, pass an instance of Puppeteer as `opts.browser`.
+   *
+   * @param {string} urlOrHtml - URL or raw HTML to process.
+   * @param {object} opts - Config options.
+   * @param {object} [opts.browser] - Optional [Puppeteer](https://pptr.dev) browser instance to use for auditing websites that aren't publicly reachable.
+   * @param {boolean} [opts.crawl=false] - Whether or not to crawl additional pages.
+   * @param {number} [opts.maxDepth=16] - Maximum crawl depth while crawling.
+   * @param {number} [opts.maxVisit] - Maximum number of pages to visit while crawling.
+   * @param {boolean} [opts.sameOrigin=true] - Whether or not to only consider crawling links with the same origin as the root URL.
+   * @param {string[]} [opts.blacklist] - Optional blacklist of URL [glob patterns](https://github.com/micromatch/micromatch) to ignore.
+   * @param {string[]} [opts.whitelist] - Optional whitelist of URL [glob patterns](https://github.com/micromatch/micromatch) to only include.
+   * @param {object} [opts.gotoOptions] - Customize the `Page.goto` navigation options.
+   * @param {object} [opts.viewport] - Set the browser window's viewport dimensions and/or resolution.
+   * @param {string} [opts.userAgent] - Set the browser's [user-agent](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/User-Agent).
+   * @param {string} [opts.emulateDevice] - Emulate a specific device type.
+   * - Use the `name` property from one of the built-in [devices](https://github.com/GoogleChrome/puppeteer/blob/master/lib/DeviceDescriptors.js).
+   * - Overrides `viewport` and `userAgent`.
+   * @param {function} [opts.onNewPage] - Optional async function called every time a new page is
+   * initialized before proceeding with extraction.
+   * @param {string} [opts.file] - Write results to a file (output format determined by file type). See the docs for more info on supported file formats (xls, xlsx, csv, json, html, txt, etc.)
+   *
+   * @return {Promise}
+   */
+  async extract(urlOrHtml, opts) {
+    if (!opts || !opts.browser) {
+      return this._remoteAudit(urlOrHtml, {
+        ...opts,
+        extractOnly: true
+      })
     } else {
       const progressSpinner = opts.progress === false ? noopSpinner : spinner
       const extractResults = await progressSpinner(
@@ -91,12 +138,7 @@ exports.Ta11y = class Ta11y {
         'Extracting content via headless chrome'
       )
 
-      if (opts.extractOnly) {
-        return extractResults
-      } else {
-        console.error('extraction results', extractResults.summary)
-        return this.auditExtractResults(extractResults, opts)
-      }
+      return formatExtractResults(extractResults, opts)
     }
   }
 
@@ -116,6 +158,8 @@ exports.Ta11y = class Ta11y {
    * - `html`
    *
    * Defaults to running all audits suites.
+   * @param {string} [opts.file] - Write results to a file (output format determined by file type). See the docs for more info on supported file formats (xls, xlsx, csv, json, html, txt, etc.)
+   *
    * @return {Promise}
    */
   async auditExtractResults(extractResults, opts = {}) {
@@ -143,7 +187,8 @@ exports.Ta11y = class Ta11y {
         'Auditing extraction results'
       )
 
-      return JSON.parse(res.body)
+      const auditResults = JSON.parse(res.body)
+      return formatAuditResults(auditResults, opts)
     } catch (err) {
       throw new Error(`Auditing failed: ${err.message}`)
     }
@@ -168,12 +213,15 @@ exports.Ta11y = class Ta11y {
       throw new Error('audit expects either a URL or HTML input')
     }
 
-    const apiUrl = opts.extractOnly
+    const { extractOnly = false, file } = opts
+
+    const apiUrl = extractOnly
       ? `${this._apiBaseUrl}/extract`
       : `${this._apiBaseUrl}/audit`
 
     delete opts.extractOnly
     delete opts.progress
+    delete opts.file
 
     // TODO: support this remotely as well
     delete opts.onNewPage
@@ -192,7 +240,17 @@ exports.Ta11y = class Ta11y {
         label
       )
 
-      return res.body
+      const results = res.body
+
+      if (file) {
+        if (extractOnly) {
+          return formatExtractResults(results, { file })
+        } else {
+          return formatAuditResults(results, { file })
+        }
+      }
+
+      return results
     } catch (err) {
       throw new Error(`Auditing failed: ${err.message}`)
     }
