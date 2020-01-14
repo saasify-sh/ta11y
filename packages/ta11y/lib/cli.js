@@ -121,8 +121,10 @@ module.exports = async (argv) => {
 
   if (opts.file) {
     if (results.summary) {
-      console.log(JSON.stringify(results.summary, null, 2))
+      console.log('results summary', JSON.stringify(results.summary, null, 2))
     }
+
+    console.log('output written to file', opts.file)
   } else {
     console.log(JSON.stringify(results, null, 2))
   }

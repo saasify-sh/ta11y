@@ -82,6 +82,8 @@ Visit [ta11y](https://ta11y.saasify.sh) once you're ready to sign up for an API 
 
 This example runs all available audit test suites on the given URL.
 
+It uses the default output behavior which logs the results in JSON format to `stdout`.
+
 ```bash
 ta11y https://example.com
 ```
@@ -191,12 +193,22 @@ If you only want specific audit results, use the `--suite` option.
 </details>
 
 <details>
-<summary>Single page audit of WCAG 2.0 A and WCAG 2.0 AA outputing to `xls`</summary>
+<summary>Basic single page audit writing results to an Excel file</summary>
 
-This example runs wcag2a and wcag2aa audit test suites on the given URL and outputs the results to an Excel spreadsheet file (`xls`).
+This example runs wcag2a and wcag2aa audit test suites on the given URL and outputs the results to an Excel spreadsheet (supports any `xls`, `xlsx`, or `csv` file).
 
 ```bash
 ta11y https://example.com --suites wcag2a,wcag2aa -o audit.xls
+```
+</details>
+
+<details>
+<summary>Single page audit testing WCAG2A and WCAG2AA writing results to a CSV file</summary>
+
+This example runs wcag2a and wcag2aa audit test suites on the given URL and outputs the results to a comma-separated-value file (`csv`).
+
+```bash
+ta11y https://example.com --suites wcag2a,wcag2aa -o audit.csv
 ```
 </details>
 
