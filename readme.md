@@ -401,6 +401,7 @@ ta11y https://example.com --suites wcag2a,html
   <a href="https://ta11y.saasify.sh" title="ta11y">
     <img src="https://storage.googleapis.com/saasify-uploads-prod/c5480c7c4e006629b4a2f7bfc5b783e2fce662ec.jpeg" alt="ta11y Logo" />
   </a>
+  <span>Let's build a more accessible and inclusive web for everyone! ☺️</span>
 </p>
 
 ## License
