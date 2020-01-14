@@ -36,7 +36,8 @@
   },
   "dependencies": {
     "@ta11y/extract": "^1.0.10",
-    "got": "9",
+    "agent-base": "^5.1.1",
+    "got": "^10.2.2",
     "is-html": "^2.0.0",
     "is-url-superb": "^3.0.0",
     "lodash.pick": "^4.4.0",
@@ -49,5 +50,8 @@
     "nock": "^11.7.2",
     "puppeteer": "^2.0.0",
     "update-markdown-jsdoc": "^1.0.11"
+  },
+  "resolutions": {
+    "agent-base": "^5.0.0"
   }
 }

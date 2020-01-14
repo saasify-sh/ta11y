@@ -120,22 +120,22 @@ exports.Ta11y = class Ta11y {
    */
   async auditExtractResults(extractResults, opts = {}) {
     const progressSpinner = opts.progress === false ? noopSpinner : spinner
-    const bodyRaw = JSON.stringify({
+    const bodyRaw = {
       ...pick(opts, ['suites', 'rules']),
       extractResults
-    })
+    }
     // const body = await gzip(Buffer.from(bodyRaw))
     const body = bodyRaw
 
     const apiAuditUrl = `${this._apiBaseUrl}/auditExtractResults`
+    console.log({ apiAuditUrl })
+
     try {
       const res = await progressSpinner(
         got.post(apiAuditUrl, {
-          body,
+          json: body,
           headers: {
-            ...this._headers,
-            accept: 'application/json',
-            'content-type': 'application/json'
+            ...this._headers
             // 'content-encoding': 'gzip'
           },
           responseType: 'json'
@@ -143,7 +143,7 @@ exports.Ta11y = class Ta11y {
         'Auditing extraction results'
       )
 
-      return JSON.parse(res.body)
+      return res.body
     } catch (err) {
       throw new Error(`Auditing failed: ${err.message}`)
     }
@@ -181,13 +181,13 @@ exports.Ta11y = class Ta11y {
     try {
       const res = await progressSpinner(
         got.post(apiUrl, {
-          body: {
+          json: {
             ...opts,
             url,
             html
           },
           headers: this._headers,
-          json: true
+          responseType: 'json'
         }),
         label
       )
