@@ -343,7 +343,6 @@ ta11y https://example.com --suites wcag2a,html
   }
 }
 ```
-
 </details>
 
 ## License
