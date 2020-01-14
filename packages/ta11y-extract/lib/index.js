@@ -39,6 +39,7 @@ const { devices } = require('puppeteer-core')
  * @return {Promise}
  */
 exports.extract = async function extract(urlOrHtml, opts) {
+  const { browser, ...rest } = opts
   let sameOrigin = opts.sameOrigin === undefined ? true : !!opts.sameOrigin
   let origin
   let url
@@ -66,7 +67,7 @@ exports.extract = async function extract(urlOrHtml, opts) {
     })
   )
 
-  debug('extract', url)
+  debug('extract', { url, ...rest })
 
   const { concurrency = 8 } = opts
   const results = {}
@@ -157,6 +158,13 @@ async function visitPage(opts) {
     }
   }
 
+  debug('visitPage', {
+    url,
+    depth,
+    visited: opts.visited.size,
+    queue: opts.queue.size
+  })
+
   opts.visited.add(normalizedUrl)
   return opts.queue.add(() =>
     extractPage({
@@ -168,7 +176,12 @@ async function visitPage(opts) {
 
 async function extractPage(opts) {
   const { normalizedUrl: url, depth } = opts
-  debug('extractPage', url)
+  debug('extractPage', {
+    url,
+    depth,
+    visited: opts.visited.size,
+    queue: opts.queue.size
+  })
   let page
 
   try {
@@ -210,7 +223,7 @@ async function extractPage(opts) {
         }
       })
 
-      await pMap(
+      return pMap(
         links,
         (link) =>
           visitPage({

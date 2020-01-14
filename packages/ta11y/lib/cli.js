@@ -41,7 +41,6 @@ module.exports = async (argv) => {
     .option(
       '-v, --max-visit <int>',
       'Maximum number of pages to visit while crawling.',
-      16,
       (s) => parseInt(s)
     )
     .option(
@@ -64,7 +63,7 @@ module.exports = async (argv) => {
       'Optionally emulate a specific device type.'
     )
     .option(
-      '-H, --no-headless <string>',
+      '-H, --no-headless',
       'Disables headless mode for puppeteer. Useful for debugging.'
     )
     .option('-P, --no-progress', 'Disables progress logging.')
