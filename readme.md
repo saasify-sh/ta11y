@@ -198,7 +198,7 @@ If you only want specific audit results, use the `--suite` option.
 This example runs wcag2a and wcag2aa audit test suites on the given URL and outputs the results to an Excel spreadsheet (supports any `xls`, `xlsx`, or `csv` file).
 
 ```bash
-ta11y https://example.com --suites wcag2a,wcag2aa -o audit.xls
+ta11y https://example.com -o audit.xls
 ```
 </details>
 
