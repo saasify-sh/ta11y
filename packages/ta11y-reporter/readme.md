@@ -34,6 +34,8 @@ audit('https://en.wikipedia.org')
   })
 ```
 
+## Formats
+
 We support all output formats supported by [SheetJS](https://docs.sheetjs.com/#supported-output-formats).
 
 | file type | file ext | container | sheets | Description                     |
@@ -85,7 +87,7 @@ If no options / filename is passed, the input will be returned untransformed.
 
 Type: `function (extractResults, opts, auditResults): Promise`
 
--   `extractResults`  
+-   `extractResults`
 -   `opts` **([object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) \| [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String))?** Filename to write or config options.
     -   `opts.file` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** Filename to write.
     -   `opts.format` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** File format to use (by default this is inferred from the filename).
