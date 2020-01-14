@@ -77,6 +77,10 @@ Visit [ta11y](https://ta11y.saasify.sh) once you're ready to sign up for an API 
 
 ### Examples
 
+Here are some example audit results so you can get a feel for the data:
+  - [example.com](http://example.com/) single page audit: [csv](https://github.com/saasify-sh/ta11y/blob/master/media/example.csv), [json](https://github.com/saasify-sh/ta11y/blob/master/media/example.json), [xls](https://github.com/saasify-sh/ta11y/blob/master/media/example.xls?raw=true), [xlsx](https://github.com/saasify-sh/ta11y/blob/master/media/example.xlsx?raw=true)
+  - [Wikipedia](http://en.wikipedia.org) small crawl (`--max-visit 16`): [csv](https://github.com/saasify-sh/ta11y/blob/master/media/wikipedia.csv), [json](https://github.com/saasify-sh/ta11y/blob/master/media/wikipedia.json), [xls](https://github.com/saasify-sh/ta11y/blob/master/media/wikipedia.xls?raw=true), [xlsx](https://github.com/saasify-sh/ta11y/blob/master/media/wikipedia.xlsx?raw=true)
+
 <details>
 <summary>Basic single page audit</summary>
 

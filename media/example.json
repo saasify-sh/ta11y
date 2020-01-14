@@ -1,0 +1,97 @@
+{
+  "summary": {
+    "errors": 4,
+    "warnings": 0,
+    "infos": 2,
+    "numPages": 1,
+    "numPagesPass": 0,
+    "numPagesFail": 1
+  },
+  "results": {
+    "http://example.com": {
+      "url": "http://example.com",
+      "depth": 0,
+      "rules": [
+        {
+          "id": "html",
+          "description": "A document must not include both a “meta” element with an “http-equiv” attribute whose value is “content-type”, and a “meta” element with a “charset” attribute.",
+          "context": "f-8\">\n    <meta http-equiv=\"Content-type\" content=\"text/html; charset=utf-8\">\n    <",
+          "type": "error",
+          "tags": [
+            "html"
+          ],
+          "firstColumn": 5,
+          "lastLine": 5,
+          "lastColumn": 71
+        },
+        {
+          "id": "html",
+          "description": " The “type” attribute for the “style” element is not needed and should be omitted.",
+          "context": "e=1\">\n    <style type=\"text/css\">\n    b",
+          "type": "info",
+          "tags": [
+            "html"
+          ],
+          "firstColumn": 5,
+          "lastLine": 7,
+          "lastColumn": 27
+        },
+        {
+          "id": "html",
+          "description": "Consider adding a “lang” attribute to the “html” start tag to declare the language of this document.",
+          "context": "TYPE html><html><head>",
+          "type": "info",
+          "tags": [
+            "html"
+          ],
+          "firstColumn": 16,
+          "lastLine": 1,
+          "lastColumn": 21
+        },
+        {
+          "id": "html-has-lang",
+          "type": "error",
+          "description": "Ensures every HTML document has a lang attribute",
+          "impact": "serious",
+          "tags": [
+            "cat.language",
+            "wcag2a",
+            "wcag311"
+          ],
+          "help": "<html> element must have a lang attribute",
+          "helpUrl": "https://dequeuniversity.com/rules/ta11y/3.4/html-has-lang?application=Ta11y%20API"
+        },
+        {
+          "id": "landmark-one-main",
+          "type": "error",
+          "description": "Ensures the document has only one main landmark and each iframe in the page has at most one main landmark",
+          "impact": "moderate",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
+          "help": "Document must have one main landmark",
+          "helpUrl": "https://dequeuniversity.com/rules/ta11y/3.4/landmark-one-main?application=Ta11y%20API"
+        },
+        {
+          "id": "region",
+          "type": "error",
+          "description": "Ensures all page content is contained by landmarks",
+          "impact": "moderate",
+          "tags": [
+            "cat.keyboard",
+            "best-practice"
+          ],
+          "help": "All page content must be contained by landmarks",
+          "helpUrl": "https://dequeuniversity.com/rules/ta11y/3.4/region?application=Ta11y%20API"
+        }
+      ],
+      "summary": {
+        "errors": 4,
+        "warnings": 0,
+        "infos": 2,
+        "pass": false
+      }
+    }
+  }
+}

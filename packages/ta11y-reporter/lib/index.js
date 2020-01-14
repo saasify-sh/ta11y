@@ -35,26 +35,28 @@ exports.formatAuditResults = async (auditResults, opts) => {
     return auditResults
   }
 
-  const results = Object.keys(auditResults.results).flatMap((url) => {
-    const auditResultsPage = auditResults.results[url]
+  const results = Object.keys(auditResults.results)
+    .map((url) => {
+      const auditResultsPage = auditResults.results[url]
 
-    return [
-      auditResultsPage.error && {
-        url,
-        depth: auditResultsPage.depth,
-        error: auditResultsPage.error
-      }
-    ]
-      .concat(
-        auditResultsPage.rules.map((rule) => ({
+      return [
+        auditResultsPage.error && {
           url,
           depth: auditResultsPage.depth,
-          ...rule,
-          tags: rule.tags.join(',')
-        }))
-      )
-      .filter(Boolean)
-  })
+          error: auditResultsPage.error
+        }
+      ]
+        .concat(
+          auditResultsPage.rules.map((rule) => ({
+            url,
+            depth: auditResultsPage.depth,
+            ...rule,
+            tags: rule.tags.join(',')
+          }))
+        )
+        .filter(Boolean)
+    })
+    .reduce((acc, cur) => acc.concat(cur), [])
 
   const formattedResults = await exports.formatResults(results, {
     label: 'Audit Results',
