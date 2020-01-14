@@ -79,7 +79,13 @@ Visit [ta11y](https://ta11y.saasify.sh) once you're ready to sign up for an API 
 
 The output format is determined by the file type if given a filename via `-o` or `--output`. If no file is given, the CLI defaults to logging the results in JSON format to `stdout`.
 
-Ta11y supports a large number of output formats including xls, xlsx, csv, json, html, txt, and [more](https://github.com/saasify-sh/ta11y/tree/master/packages/ta11y-reporter#formats).
+Ta11y supports a large number of [output formats](https://github.com/saasify-sh/ta11y/tree/master/packages/ta11y-reporter#formats) including:
+  - **xls**
+  - x**lsx**
+  - **csv**
+  - **json**
+  - **html**
+  - **txt**
 
 Here are some example audit results so you can get a feel for the data:
   - [example.com](http://example.com/) single page audit: [csv](https://github.com/saasify-sh/ta11y/blob/master/media/example.csv), [json](https://github.com/saasify-sh/ta11y/blob/master/media/example.json), [xls](https://github.com/saasify-sh/ta11y/blob/master/media/example.xls?raw=true), [xlsx](https://github.com/saasify-sh/ta11y/blob/master/media/example.xlsx?raw=true)
