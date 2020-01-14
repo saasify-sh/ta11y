@@ -21,7 +21,7 @@
 - **Modern dynamic websites**
   - Ta11y treats all websites as dynamic with full JavaScript support, so you'll test pages as your users actually experience them.
 - **Free to try**
-  - Simple to get started for free, then [sign up](/pricing) once you're ready to remove rate limits.
+  - Simple to get started for free, then [sign up](/pricing) once you're ready to remove rate limits. Have a non-profit use case? [Get in touch](mailto:support@saasify.sh).
 - **Private & secure**
   - Ta11y is built using serverless functions and never stores any of your data or audit results.
 
