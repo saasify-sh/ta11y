@@ -13,7 +13,9 @@
   },
   "dependencies": {
     "@ta11y/core": "^1.1.2",
-    "@ta11y/on-prem": "^0.1.1",
     "puppeteer": "^2.0.0"
+  },
+  "optionalDependencies": {
+    "@ta11y/on-prem": "^0.1.1"
   }
 }

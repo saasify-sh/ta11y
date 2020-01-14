@@ -5,7 +5,6 @@ const { Ta11y } = require('@ta11y/core')
 const { auditExtractResults } = require('@ta11y/on-prem')
 
 const main = async () => {
-  // Create a browser that we'll initialize with cookies and then use to run the ta11y audit
   const browser = await puppeteer.launch({ headless: false, slowMo: 10 })
   const ta11y = new Ta11y()
 

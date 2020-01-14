@@ -14,6 +14,8 @@ const pMap = require('p-map')
 const { default: PQueue } = require('p-queue')
 const { devices } = require('puppeteer-core')
 
+const uriSchemeWhitelist = new Set(['http', 'https'])
+
 /**
  * Extracts the dynamic HTML content from a website, optionally crawling the site
  * to discover additional pages and extracting those too.
@@ -67,7 +69,7 @@ exports.extract = async function extract(urlOrHtml, opts) {
     })
   )
 
-  debug('extract', { url, ...rest })
+  debug('extract %O', { url, ...rest })
 
   const { concurrency = 8 } = opts
   const results = {}
@@ -102,16 +104,11 @@ exports.extract = async function extract(urlOrHtml, opts) {
   queue.pause()
 
   const summary = {
-    root: url,
-    visited: visited.size,
-    success: Object.keys(results).reduce(
-      (acc, url) => acc + (results[url].error ? 0 : 1),
-      0
-    ),
-    error: Object.keys(results).reduce(
-      (acc, url) => acc + (results[url].error ? 1 : 0),
-      0
-    )
+    ...getSummary({
+      visited,
+      results
+    }),
+    root: url
   }
 
   debug('extract results summary %O', summary)
@@ -126,62 +123,75 @@ async function visitPage(opts) {
   const { url, depth } = opts
   if (!url) return
 
-  if (opts.maxDepth && depth > opts.maxDepth) {
-    return
+  try {
+    if (opts.maxDepth && depth > opts.maxDepth) {
+      return
+    }
+
+    if (opts.maxVisit && opts.visited.size >= opts.maxVisit) {
+      return
+    }
+
+    if (opts.visited.has(url)) {
+      return
+    }
+
+    let normalizedUrl
+
+    if (depth === 0 && opts.html) {
+      normalizedUrl = url
+    } else {
+      normalizedUrl = normalizeUrl(url)
+
+      if (opts.visited.has(normalizedUrl)) {
+        return
+      }
+
+      if (opts.sameOrigin && new URL(normalizedUrl).origin !== opts.origin) {
+        return
+      }
+
+      if (opts.blacklist && mm.isMatch(normalizedUrl, opts.blacklist)) {
+        return
+      }
+
+      if (opts.whitelist && !mm.isMatch(normalizedUrl, opts.whitelist)) {
+        return
+      }
+    }
+
+    if (process.env.DEBUG) {
+      debug('visitPage %O', {
+        url,
+        depth,
+        queue: opts.queue.size,
+        ...getSummary(opts)
+      })
+    }
+
+    opts.visited.add(normalizedUrl)
+    return opts.queue.add(() =>
+      extractPage({
+        ...opts,
+        normalizedUrl
+      })
+    )
+  } catch (err) {
+    // silently ignore any page that fails to initialize as its URL must be invalid
   }
-
-  if (opts.maxVisit && opts.visited.size >= opts.maxVisit) {
-    return
-  }
-
-  let normalizedUrl
-
-  if (depth === 0 && opts.html) {
-    normalizedUrl = url
-  } else {
-    normalizedUrl = normalizeUrl(url)
-
-    if (opts.visited.has(normalizedUrl)) {
-      return
-    }
-
-    if (opts.sameOrigin && new URL(normalizedUrl).origin !== opts.origin) {
-      return
-    }
-
-    if (opts.blacklist && mm.isMatch(normalizedUrl, opts.blacklist)) {
-      return
-    }
-
-    if (opts.whitelist && !mm.isMatch(normalizedUrl, opts.whitelist)) {
-      return
-    }
-  }
-
-  debug('visitPage', {
-    url,
-    depth,
-    visited: opts.visited.size,
-    queue: opts.queue.size
-  })
-
-  opts.visited.add(normalizedUrl)
-  return opts.queue.add(() =>
-    extractPage({
-      ...opts,
-      normalizedUrl
-    })
-  )
 }
 
 async function extractPage(opts) {
   const { normalizedUrl: url, depth } = opts
-  debug('extractPage', {
-    url,
-    depth,
-    visited: opts.visited.size,
-    queue: opts.queue.size
-  })
+  if (process.env.DEBUG) {
+    debug('extractPage %O', {
+      url,
+      depth,
+      queue: opts.queue.size,
+      ...getSummary(opts)
+    })
+  }
+
   let page
 
   try {
@@ -215,13 +225,30 @@ async function extractPage(opts) {
       }
 
       const hrefs = await page.$$eval('a', (as) => as.map((a) => a.href))
-      const links = hrefs.map((href) => {
-        if (isRelativeUrl(href)) {
-          return resolveRelativeUrl(href, url)
-        } else {
-          return href
-        }
-      })
+
+      if (page) {
+        await page.close()
+        page = null
+      }
+
+      const links = hrefs
+        .map((href) => {
+          if (!href || href.startsWith('#')) {
+            // ignore empty links and anchor links
+            return null
+          } else {
+            const uriScheme = href.split(':')[0]
+            if (uriScheme && !uriSchemeWhitelist.has(uriScheme)) {
+              // ignore uri schemes like `tel:`, `mailto:`, and `javascript:`
+              return null
+            } else if (isRelativeUrl(href)) {
+              return resolveRelativeUrl(href, url)
+            } else {
+              return href
+            }
+          }
+        })
+        .filter(Boolean)
 
       return pMap(
         links,
@@ -290,4 +317,20 @@ async function getPage(url, opts) {
   }
 
   return page
+}
+
+function getSummary(opts) {
+  const { visited, results } = opts
+
+  return {
+    visited: visited.size,
+    success: Object.keys(results).reduce(
+      (acc, url) => acc + (results[url].error ? 0 : 1),
+      0
+    ),
+    error: Object.keys(results).reduce(
+      (acc, url) => acc + (results[url].error ? 1 : 0),
+      0
+    )
+  }
 }
