@@ -1,0 +1,11 @@
+﻿url,depth,id,description,context,type,tags,firstColumn,lastLine,lastColumn,impact,help,helpUrl
+http://example.com,0,html,"A document must not include both a “meta” element with an “http-equiv” attribute whose value is “content-type”, and a “meta” element with a “charset” attribute.","f-8"">
+    <meta http-equiv=""Content-type"" content=""text/html; charset=utf-8"">
+    <",error,html,5,5,71,,,
+http://example.com,0,html, The “type” attribute for the “style” element is not needed and should be omitted.,"e=1"">
+    <style type=""text/css"">
+    b",info,html,5,7,27,,,
+http://example.com,0,html,Consider adding a “lang” attribute to the “html” start tag to declare the language of this document.,TYPE html><html><head>,info,html,16,1,21,,,
+http://example.com,0,html-has-lang,Ensures every HTML document has a lang attribute,,error,"cat.language,wcag2a,wcag311",,,,serious,<html> element must have a lang attribute,https://dequeuniversity.com/rules/ta11y/3.4/html-has-lang?application=Ta11y%20API
+http://example.com,0,landmark-one-main,Ensures the document has only one main landmark and each iframe in the page has at most one main landmark,,error,"cat.semantics,best-practice",,,,moderate,Document must have one main landmark,https://dequeuniversity.com/rules/ta11y/3.4/landmark-one-main?application=Ta11y%20API
+http://example.com,0,region,Ensures all page content is contained by landmarks,,error,"cat.keyboard,best-practice",,,,moderate,All page content must be contained by landmarks,https://dequeuniversity.com/rules/ta11y/3.4/region?application=Ta11y%20API
