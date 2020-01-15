@@ -309,7 +309,8 @@ exports.Ta11y = class Ta11y {
         results
       }
     } else {
-      console.log({ body: body.length, bodyRaw: bodyRaw.length })
+      // console.log({ body: body.length, bodyRaw: bodyRaw.length })
+
       const apiAuditUrl = `${this._apiBaseUrl}/auditExtractResults`
       try {
         const res = await progressSpinner(
