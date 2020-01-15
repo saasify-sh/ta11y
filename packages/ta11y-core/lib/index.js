@@ -335,6 +335,7 @@ exports.Ta11y = class Ta11y {
 
         return JSON.parse(res.body)
       } catch (err) {
+        // console.error(err)
         throw new Error(`Auditing failed: ${err.message}`)
       }
     }
