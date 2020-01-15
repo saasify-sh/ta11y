@@ -245,7 +245,12 @@ exports.Ta11y = class Ta11y {
     // const body = await compress(Buffer.from(bodyRaw))
     const body = bodyRaw
 
-    if (bodyRaw >= 990000 && Object.keys(extractResults.results).length > 1) {
+    // break up large request bodies into more manageable chunks to prevent
+    // potential timeouts
+    if (
+      body.length >= 990000 &&
+      Object.keys(extractResults.results).length > 1
+    ) {
       const keys = Object.keys(extractResults.results)
       const results = {}
 
@@ -303,28 +308,28 @@ exports.Ta11y = class Ta11y {
         summary,
         results
       }
-    }
+    } else {
+      console.log({ body: body.length, bodyRaw: bodyRaw.length })
+      const apiAuditUrl = `${this._apiBaseUrl}/auditExtractResults`
+      try {
+        const res = await progressSpinner(
+          got.post(apiAuditUrl, {
+            body,
+            headers: {
+              ...this._headers,
+              accept: 'application/json',
+              'content-type': 'application/json'
+              // 'content-encoding': 'br'
+            },
+            responseType: 'json'
+          }),
+          'Auditing extraction results'
+        )
 
-    console.log({ body: body.length, bodyRaw: bodyRaw.length })
-    const apiAuditUrl = `${this._apiBaseUrl}/auditExtractResults`
-    try {
-      const res = await progressSpinner(
-        got.post(apiAuditUrl, {
-          body,
-          headers: {
-            ...this._headers,
-            accept: 'application/json',
-            'content-type': 'application/json'
-            // 'content-encoding': 'br'
-          },
-          responseType: 'json'
-        }),
-        'Auditing extraction results'
-      )
-
-      return JSON.parse(res.body)
-    } catch (err) {
-      throw new Error(`Auditing failed: ${err.message}`)
+        return JSON.parse(res.body)
+      } catch (err) {
+        throw new Error(`Auditing failed: ${err.message}`)
+      }
     }
   }
 }
