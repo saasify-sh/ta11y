@@ -271,13 +271,19 @@ exports.Ta11y = class Ta11y {
               opts
             )
 
-            results[key] = result
-            debug('done auditing page %s %s', key, result.summary)
+            results[key] = result.results[key]
+            debug('done auditing page %s %O', key, results[key].summary)
           } catch (err) {
             debug('error auditing page %s %s', key, err.message)
 
             results[key] = {
               url: key,
+              summary: {
+                pass: false,
+                errors: 1,
+                warnings: 0,
+                infos: 0
+              },
               depth: page.depth,
               error: err.message,
               rules: []
@@ -285,9 +291,11 @@ exports.Ta11y = class Ta11y {
           }
         },
         {
-          concurrency: 4
+          concurrency: 8
         }
       )
+
+      // 7bc1c5ac7b5efbbe8c9bd595
 
       const summary = {
         suites: opts.suites || [],
