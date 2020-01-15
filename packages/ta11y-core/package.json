@@ -1,6 +1,6 @@
 {
   "name": "@ta11y/core",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "Core library for running web accessibility audits with ta11y.",
   "main": "./lib/index.js",
   "author": "Saasify <dev@saasify.sh>",
@@ -35,7 +35,7 @@
     "snapshotDir": "./.snapshots"
   },
   "dependencies": {
-    "@ta11y/extract": "^1.2.3",
+    "@ta11y/extract": "^1.2.4",
     "@ta11y/reporter": "^1.2.1",
     "debug": "^4.1.1",
     "got": "9",
