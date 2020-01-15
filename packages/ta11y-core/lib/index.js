@@ -295,8 +295,6 @@ exports.Ta11y = class Ta11y {
         }
       )
 
-      // 7bc1c5ac7b5efbbe8c9bd595
-
       const summary = {
         suites: opts.suites || [],
 

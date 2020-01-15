@@ -335,6 +335,20 @@ ta11y https://example.com --suites wcag2a,html
 ```
 </details>
 
+<details>
+<summary>More advanced crawling with debug output</summary>
+
+This example crawls the English Wikipedia site, visiting up to 200 pages and uses a whitelist to ensure that we only consider links on the English Wikipedia domain.
+
+It then runs an audit against the `wcag2a` and `wcag2aa` test suites.
+
+This example also shows how you can get additional debug output during crawling and auditing that can be really helpful to understand what's going on under the hood.
+
+```bash
+DEBUG=ta11y:* ta11y "https://en.wikipedia.org" --crawl --max-visit 200 --whitelist "https://en.wikipedia.org/**/*" --suites wcag2a,wcag2aa -o wikipedia.xlsx
+```
+</details>
+
 ---
 
 <p align="center">
