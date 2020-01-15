@@ -165,7 +165,9 @@ async function visitPage(opts) {
     if (depth === 0 && opts.html) {
       normalizedUrl = url
     } else {
-      normalizedUrl = normalizeUrl(url)
+      normalizedUrl = normalizeUrl(url, {
+        stripHash: true
+      })
 
       if (opts.visited.has(normalizedUrl)) {
         return
