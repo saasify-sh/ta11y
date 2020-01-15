@@ -198,7 +198,9 @@ async function visitPage(opts) {
     }
 
     opts.visited.add(normalizedUrl)
-    return opts.queue.add(() =>
+
+    // we purposefully don't await this add because we don't want to starve the queue
+    opts.queue.add(() =>
       extractPage({
         ...opts,
         normalizedUrl

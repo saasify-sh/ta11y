@@ -3,10 +3,12 @@
 const { extract } = require('@ta11y/extract')
 const { formatExtractResults, formatAuditResults } = require('@ta11y/reporter')
 
+const debug = require('debug')('ta11y:core')
 const got = require('got')
-const pick = require('lodash.pick')
 const isHtml = require('is-html')
 const isUrl = require('is-url-superb')
+const pick = require('lodash.pick')
+const pMap = require('p-map')
 
 // const util = require('util')
 // const zlib = require('zlib')
@@ -15,7 +17,7 @@ const noopSpinner = require('./noop-spinner')
 const spinner = require('./spinner')
 
 // TODO: ZEIT now seems to have a bug with handling content-encoding compression
-// const gzip = util.promisify(zlib.gzip.bind(zlib))
+// const compress = util.promisify(zlib.brotliCompress.bind(zlib))
 
 /**
  * Class to run web accessibility audits via the [ta11y API](https://ta11y.saasify.sh).
@@ -165,35 +167,8 @@ exports.Ta11y = class Ta11y {
    * @return {Promise}
    */
   async auditExtractResults(extractResults, opts = {}) {
-    const progressSpinner = opts.progress === false ? noopSpinner : spinner
-    const bodyRaw = JSON.stringify({
-      ...pick(opts, ['suites', 'rules']),
-      extractResults
-    })
-    // const body = await gzip(Buffer.from(bodyRaw))
-    const body = bodyRaw
-
-    const apiAuditUrl = `${this._apiBaseUrl}/auditExtractResults`
-    try {
-      const res = await progressSpinner(
-        got.post(apiAuditUrl, {
-          body,
-          headers: {
-            ...this._headers,
-            accept: 'application/json',
-            'content-type': 'application/json'
-            // 'content-encoding': 'gzip'
-          },
-          responseType: 'json'
-        }),
-        'Auditing extraction results'
-      )
-
-      const auditResults = JSON.parse(res.body)
-      return formatAuditResults(auditResults, opts)
-    } catch (err) {
-      throw new Error(`Auditing failed: ${err.message}`)
-    }
+    const auditResults = await this._auditExtractResults(extractResults, opts)
+    return formatAuditResults(auditResults, opts)
   }
 
   /**
@@ -253,6 +228,101 @@ exports.Ta11y = class Ta11y {
       }
 
       return results
+    } catch (err) {
+      throw new Error(`Auditing failed: ${err.message}`)
+    }
+  }
+
+  /**
+   * @private
+   */
+  async _auditExtractResults(extractResults, opts = {}) {
+    const progressSpinner = opts.progress === false ? noopSpinner : spinner
+    const bodyRaw = JSON.stringify({
+      ...pick(opts, ['suites', 'rules']),
+      extractResults
+    })
+    // const body = await compress(Buffer.from(bodyRaw))
+    const body = bodyRaw
+
+    if (bodyRaw >= 990000 && Object.keys(extractResults.results).length > 1) {
+      const keys = Object.keys(extractResults.results)
+      const results = {}
+
+      await pMap(
+        keys,
+        async (key) => {
+          const page = extractResults.results[key]
+
+          try {
+            debug('auditing page %s', key)
+            const result = await this._auditExtractResults(
+              {
+                summary: extractResults.summary,
+                results: {
+                  [key]: page
+                }
+              },
+              opts
+            )
+
+            results[key] = result
+            debug('done auditing page %s %s', key, result.summary)
+          } catch (err) {
+            debug('error auditing page %s %s', key, err.message)
+
+            results[key] = {
+              url: key,
+              depth: page.depth,
+              error: err.message,
+              rules: []
+            }
+          }
+        },
+        {
+          concurrency: 4
+        }
+      )
+
+      const summary = {
+        suites: opts.suites || [],
+
+        errors: keys.reduce((acc, key) => acc + results[key].summary.errors, 0),
+        warnings: keys.reduce(
+          (acc, key) => acc + results[key].summary.warnings,
+          0
+        ),
+        infos: keys.reduce((acc, key) => acc + results[key].summary.infos, 0),
+
+        numPages: keys.length,
+        numPagesPass: keys.filter((key) => results[key].summary.pass).length,
+        numPagesFail: keys.filter((key) => !results[key].summary.pass).length
+      }
+
+      return {
+        summary,
+        results
+      }
+    }
+
+    console.log({ body: body.length, bodyRaw: bodyRaw.length })
+    const apiAuditUrl = `${this._apiBaseUrl}/auditExtractResults`
+    try {
+      const res = await progressSpinner(
+        got.post(apiAuditUrl, {
+          body,
+          headers: {
+            ...this._headers,
+            accept: 'application/json',
+            'content-type': 'application/json'
+            // 'content-encoding': 'br'
+          },
+          responseType: 'json'
+        }),
+        'Auditing extraction results'
+      )
+
+      return JSON.parse(res.body)
     } catch (err) {
       throw new Error(`Auditing failed: ${err.message}`)
     }
