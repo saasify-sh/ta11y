@@ -1,6 +1,6 @@
 {
   "name": "@ta11y/core",
-  "version": "1.2.7",
+  "version": "1.2.8",
   "description": "Core library for running web accessibility audits with ta11y.",
   "main": "./lib/index.js",
   "author": "Saasify <dev@saasify.sh>",
