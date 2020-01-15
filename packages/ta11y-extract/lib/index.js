@@ -71,6 +71,30 @@ exports.extract = async function extract(urlOrHtml, opts) {
 
   debug('extract %O', { url, ...rest })
 
+  if (opts.whitelist) {
+    opts.whitelist = opts.whitelist
+      .map((p) => {
+        try {
+          return new URL(p).pathname
+        } catch (err) {
+          debug('extract invalid whitelist entry %s', p)
+        }
+      })
+      .filter(Boolean)
+  }
+
+  if (opts.blacklist) {
+    opts.blacklist = opts.blacklist
+      .map((p) => {
+        try {
+          return new URL(p).pathname
+        } catch (err) {
+          debug('extract invalid blacklist entry %s', p)
+        }
+      })
+      .filter(Boolean)
+  }
+
   const { concurrency = 8 } = opts
   const results = {}
   const visited = new Set()
@@ -147,15 +171,17 @@ async function visitPage(opts) {
         return
       }
 
-      if (opts.sameOrigin && new URL(normalizedUrl).origin !== opts.origin) {
+      const parsedUrl = new URL(normalizedUrl)
+
+      if (opts.sameOrigin && parsedUrl.origin !== opts.origin) {
         return
       }
 
-      if (opts.blacklist && mm.isMatch(normalizedUrl, opts.blacklist)) {
+      if (opts.blacklist && mm.isMatch(parsedUrl.pathname, opts.blacklist)) {
         return
       }
 
-      if (opts.whitelist && !mm.isMatch(normalizedUrl, opts.whitelist)) {
+      if (opts.whitelist && !mm.isMatch(parsedUrl.pathname, opts.whitelist)) {
         return
       }
     }
