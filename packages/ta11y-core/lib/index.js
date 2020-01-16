@@ -32,8 +32,7 @@ const spinner = require('./spinner')
 exports.Ta11y = class Ta11y {
   constructor(opts = {}) {
     const {
-      apiBaseUrl = process.env.TA11Y_API_BASE_URL ||
-        'https://ssfy.sh/dev/ta11y',
+      apiBaseUrl = process.env.TA11Y_API_BASE_URL || 'https://ssfy.sh',
       apiKey = process.env.TA11Y_API_KEY
     } = opts
 
@@ -193,8 +192,8 @@ exports.Ta11y = class Ta11y {
     const { extractOnly = false, file } = opts
 
     const apiUrl = extractOnly
-      ? `${this._apiBaseUrl}/extract`
-      : `${this._apiBaseUrl}/audit`
+      ? `${this._apiBaseUrl}/dev/ta11y/extract`
+      : `${this._apiBaseUrl}/dev/ta11y/audit`
 
     delete opts.extractOnly
     delete opts.progress
@@ -317,7 +316,7 @@ exports.Ta11y = class Ta11y {
     } else {
       // console.log({ body: body.length, bodyRaw: bodyRaw.length })
 
-      const apiAuditUrl = `${this._apiBaseUrl}/auditExtractResults`
+      const apiAuditUrl = `${this._apiBaseUrl}/dev/ta11y/auditExtractResults`
       try {
         const res = await progressSpinner(
           got.post(apiAuditUrl, {
