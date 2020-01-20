@@ -10,14 +10,14 @@ const isUrl = require('is-url-superb')
 const pick = require('lodash.pick')
 const pMap = require('p-map')
 
-// const util = require('util')
-// const zlib = require('zlib')
+const util = require('util')
+const zlib = require('zlib')
 
 const noopSpinner = require('./noop-spinner')
 const spinner = require('./spinner')
 
 // TODO: ZEIT now seems to have a bug with handling content-encoding compression
-// const compress = util.promisify(zlib.brotliCompress.bind(zlib))
+const compress = util.promisify(zlib.brotliCompress.bind(zlib))
 
 /**
  * Class to run web accessibility audits via the [ta11y API](https://ta11y.saasify.sh).
@@ -241,8 +241,7 @@ exports.Ta11y = class Ta11y {
       ...pick(opts, ['suites', 'rules']),
       extractResults
     })
-    // const body = await compress(Buffer.from(bodyRaw))
-    const body = bodyRaw
+    const body = await compress(Buffer.from(bodyRaw))
 
     // break up large request bodies into more manageable chunks to prevent
     // potential timeouts
@@ -314,7 +313,7 @@ exports.Ta11y = class Ta11y {
         results
       }
     } else {
-      // console.log({ body: body.length, bodyRaw: bodyRaw.length })
+      console.log({ body: body.length, bodyRaw: bodyRaw.length })
 
       const apiAuditUrl = `${this._apiBaseUrl}/dev/ta11y/auditExtractResults`
       try {
@@ -324,8 +323,8 @@ exports.Ta11y = class Ta11y {
             headers: {
               ...this._headers,
               accept: 'application/json',
-              'content-type': 'application/json'
-              // 'content-encoding': 'br'
+              'content-type': 'application/json',
+              'content-encoding': 'br'
             },
             responseType: 'json'
           }),
