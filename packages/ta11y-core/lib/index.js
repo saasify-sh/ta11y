@@ -255,15 +255,11 @@ exports.Ta11y = class Ta11y {
       ...pick(opts, ['suites', 'rules']),
       extractResults
     })
-    const body = await compress(Buffer.from(bodyRaw))
 
     // break up large request bodies into more manageable chunks to prevent
     // potential timeouts
-    if (
-      body.length >= 990000 &&
-      Object.keys(extractResults.results).length > 1
-    ) {
-      const keys = Object.keys(extractResults.results)
+    const keys = Object.keys(extractResults.results)
+    if ((bodyRaw.length >= 990000 && keys.length > 1) || keys.length > 5) {
       const results = {}
 
       await pMap(
@@ -327,7 +323,8 @@ exports.Ta11y = class Ta11y {
         results
       }
     } else {
-      console.log({ body: body.length, bodyRaw: bodyRaw.length })
+      const body = await compress(Buffer.from(bodyRaw))
+      // console.log({ body: body.length, bodyRaw: bodyRaw.length })
 
       const apiAuditUrl = `${this._apiBaseUrl}/dev/ta11y/auditExtractResults`
       try {
