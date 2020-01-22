@@ -45,12 +45,12 @@
     "ora": "^4.0.3",
     "ow": "^0.15.0",
     "p-map": "^3.0.0",
+    "puppeteer": "^2.0.0",
     "puppeteer-core": "^2.0.0"
   },
   "devDependencies": {
     "ava": "^2.4.0",
     "nock": "^11.7.2",
-    "puppeteer": "^2.0.0",
     "update-markdown-jsdoc": "^1.0.11"
   }
 }

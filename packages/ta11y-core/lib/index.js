@@ -9,9 +9,9 @@ const isHtml = require('is-html')
 const isUrl = require('is-url-superb')
 const pick = require('lodash.pick')
 const pMap = require('p-map')
-
 const util = require('util')
 const zlib = require('zlib')
+const puppeteer = require('puppeteer')
 
 const noopSpinner = require('./noop-spinner')
 const spinner = require('./spinner')
@@ -52,7 +52,7 @@ exports.Ta11y = class Ta11y {
    *
    * To audit local or private websites, pass an instance of Puppeteer as `opts.browser`.
    *
-   * The default behavior is to perform content extraction and auditing remotely. This works
+   * The default behavior is to perform content extraction locally and auditing remotely. This works
    * best for auditing publicly accessible websites.
    *
    * @param {string} urlOrHtml - URL or raw HTML to process.
@@ -87,6 +87,13 @@ exports.Ta11y = class Ta11y {
    * @return {Promise}
    */
   async audit(urlOrHtml, opts) {
+    if (opts && opts.crawl && !opts.browser) {
+      opts.browser = await puppeteer.launch({
+        ignoreHTTPSErrors: true,
+        headless: true
+      })
+    }
+
     if (!opts || !opts.browser) {
       return this._remoteAudit(urlOrHtml, {
         ...opts,
@@ -128,6 +135,13 @@ exports.Ta11y = class Ta11y {
    * @return {Promise}
    */
   async extract(urlOrHtml, opts) {
+    if (opts && opts.crawl && !opts.browser) {
+      opts.browser = await puppeteer.launch({
+        ignoreHTTPSErrors: true,
+        headless: true
+      })
+    }
+
     if (!opts || !opts.browser) {
       return this._remoteAudit(urlOrHtml, {
         ...opts,
