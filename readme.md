@@ -361,3 +361,5 @@ DEBUG=ta11y:* ta11y "https://en.wikipedia.org" --crawl --max-visit 200 --whiteli
 ## License
 
 MIT © [Saasify](https://saasify.sh)
+
+Support my OSS work by <a href="https://twitter.com/transitive_bs">following me on twitter <img src="https://storage.googleapis.com/saasify-assets/twitter-logo.svg" alt="twitter" height="24px" align="center"></a>
