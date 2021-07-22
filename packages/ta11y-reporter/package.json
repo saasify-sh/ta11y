@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "fs-extra": "^8.1.0",
-    "xlsx": "^0.15.4"
+    "xlsx": "^0.17.0"
   },
   "devDependencies": {
     "globby": "^11.0.0",
